@@ -24,39 +24,39 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-	kJWConstraintAttributeMinX,
-	kJWConstraintAttributeMidX,
-	kJWConstraintAttributeMaxX,
-	kJWConstraintAttributeWidth,
-	kJWConstraintAttributeMinY,
-	kJWConstraintAttributeMidY,
-	kJWConstraintAttributeMaxY,
-	kJWConstraintAttributeHeight,
+    kJWConstraintAttributeMinX,
+    kJWConstraintAttributeMidX,
+    kJWConstraintAttributeMaxX,
+    kJWConstraintAttributeWidth,
+    kJWConstraintAttributeMinY,
+    kJWConstraintAttributeMidY,
+    kJWConstraintAttributeMaxY,
+    kJWConstraintAttributeHeight,
 }JWConstraintAttribute;
 
 @interface JWConstraint : NSObject
 {
-	UIView *view;
-	JWConstraintAttribute attribute;
-	UIView *relativeView;
-	JWConstraintAttribute relativeAttribute;
-	CGFloat scale;
-	CGFloat offset;
+    UIView *view;
+    JWConstraintAttribute attribute;
+    UIView *relativeView;
+    JWConstraintAttribute relativeAttribute;
+    CGFloat scale;
+    CGFloat offset;
 }
 
 + (id)constraintWithView:(UIView*)aView
-			   attribute:(JWConstraintAttribute)anAttribute 
-			  relativeTo:(UIView*)aRelativeView 
-			   attribute:(JWConstraintAttribute)aRelativeAttribute 
-				   scale:(CGFloat)aScale 
-				  offset:(CGFloat)aOffset;
+               attribute:(JWConstraintAttribute)anAttribute 
+              relativeTo:(UIView*)aRelativeView 
+               attribute:(JWConstraintAttribute)aRelativeAttribute 
+                   scale:(CGFloat)aScale 
+                  offset:(CGFloat)aOffset;
 
 - (id)initWithView:(UIView*)aView
-		 attribute:(JWConstraintAttribute)anAttribute 
-		relativeTo:(UIView*)aRelativeView 
-		 attribute:(JWConstraintAttribute)aRelativeAttribute 
-			 scale:(CGFloat)aScale 
-			offset:(CGFloat)aOffset;
+         attribute:(JWConstraintAttribute)anAttribute 
+        relativeTo:(UIView*)aRelativeView 
+         attribute:(JWConstraintAttribute)aRelativeAttribute 
+             scale:(CGFloat)aScale 
+            offset:(CGFloat)aOffset;
 
 @property (nonatomic, readonly, retain) UIView *view;
 @property (nonatomic, readonly, retain) UIView *relativeView;
@@ -70,7 +70,7 @@ typedef enum {
 
 @interface JWConstraintLayoutView : UIView 
 {
-	NSMutableSet *constraints;
+    NSMutableSet *constraints;
 }
 
 - (void)addConstraint:(JWConstraint*)constraint;

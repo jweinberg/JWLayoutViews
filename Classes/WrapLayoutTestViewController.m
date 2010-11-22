@@ -33,90 +33,90 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	//layoutView.minRowHeight = 100.0;
-	layoutView.verticalRowAlignment = JWVerticalRowAlignmentCenter;
-	layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
+    //layoutView.minRowHeight = 100.0;
+    layoutView.verticalRowAlignment = JWVerticalRowAlignmentCenter;
+    layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
 }
 
 #define UNIFORM_RAND() ((float)rand()/RAND_MAX)
 
 - (void)sizeAnimate:(UIView*)sender;
 {
-	//[UIView beginAnimations:nil context:nil];
-	CGRect r = sender.frame;
-	r.size = CGSizeMake(UNIFORM_RAND() * 25.0f + 25.0f, UNIFORM_RAND() * 25.0f + 25.0f);
-	sender.frame = r;
-//	[UIView commitAnimations];
+    //[UIView beginAnimations:nil context:nil];
+    CGRect r = sender.frame;
+    r.size = CGSizeMake(UNIFORM_RAND() * 25.0f + 25.0f, UNIFORM_RAND() * 25.0f + 25.0f);
+    sender.frame = r;
+//    [UIView commitAnimations];
 }
 
 - (IBAction)addTestView:(id)sender;
 {
-	UIButton * tmp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[tmp addTarget:self action:@selector(sizeAnimate:) forControlEvents:UIControlEventTouchUpInside];
-	[tmp setFrame:CGRectMake(0, 0, 50, 50)];
-	tmp.backgroundColor = [UIColor colorWithRed:UNIFORM_RAND() green:UNIFORM_RAND() blue:UNIFORM_RAND() alpha:1.0];
-	[layoutView addSubview:tmp];
+    UIButton * tmp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [tmp addTarget:self action:@selector(sizeAnimate:) forControlEvents:UIControlEventTouchUpInside];
+    [tmp setFrame:CGRectMake(0, 0, 50, 50)];
+    tmp.backgroundColor = [UIColor colorWithRed:UNIFORM_RAND() green:UNIFORM_RAND() blue:UNIFORM_RAND() alpha:1.0];
+    [layoutView addSubview:tmp];
 }
 
 - (IBAction)setLeft:(UISlider*)sender;
 {
-	insets.left = sender.value;
-	layoutView.subviewMargins = insets;
+    insets.left = sender.value;
+    layoutView.subviewMargins = insets;
 }
 
 - (IBAction)setTop:(UISlider*)sender;
 {
-	insets.top = sender.value;
-	layoutView.subviewMargins = insets;
+    insets.top = sender.value;
+    layoutView.subviewMargins = insets;
 }
 
 - (IBAction)setRight:(UISlider*)sender;
 {
-	insets.right = sender.value;
-	layoutView.subviewMargins = insets;
+    insets.right = sender.value;
+    layoutView.subviewMargins = insets;
 }
 
 - (IBAction)setBottom:(UISlider*)sender;
 {
-	insets.bottom = sender.value;
-	layoutView.subviewMargins = insets;
+    insets.bottom = sender.value;
+    layoutView.subviewMargins = insets;
 }
 
 - (IBAction)horiz:(id)sender;
 {
-	switch (layoutView.horizontalRowAlignment)
-	{
-		case JWHorizontalRowAlignmentCenter:
-			layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentRight;
-			break;
-		case JWHorizontalRowAlignmentRight:
-			layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentLeft;
-			break;
-		case JWHorizontalRowAlignmentLeft:
-			layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
-			break;
-	}
+    switch (layoutView.horizontalRowAlignment)
+    {
+        case JWHorizontalRowAlignmentCenter:
+            layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentRight;
+            break;
+        case JWHorizontalRowAlignmentRight:
+            layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentLeft;
+            break;
+        case JWHorizontalRowAlignmentLeft:
+            layoutView.horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
+            break;
+    }
 }
 
 - (IBAction)vert:(id)sender;
 {
-	switch (layoutView.verticalRowAlignment)
-	{
-		case JWVerticalRowAlignmentCenter:
-			layoutView.verticalRowAlignment = JWVerticalRowAlignmentBottom;
-			break;
-		case JWVerticalRowAlignmentBottom:
-			layoutView.verticalRowAlignment = JWVerticalRowAlignmentTop;
-			break;
-		case JWVerticalRowAlignmentTop:
-			layoutView.verticalRowAlignment = JWVerticalRowAlignmentCenter;
-			break;
-	}	
+    switch (layoutView.verticalRowAlignment)
+    {
+        case JWVerticalRowAlignmentCenter:
+            layoutView.verticalRowAlignment = JWVerticalRowAlignmentBottom;
+            break;
+        case JWVerticalRowAlignmentBottom:
+            layoutView.verticalRowAlignment = JWVerticalRowAlignmentTop;
+            break;
+        case JWVerticalRowAlignmentTop:
+            layoutView.verticalRowAlignment = JWVerticalRowAlignmentCenter;
+            break;
+    }    
 }
 
 - (void)dealloc 
 {
-	[layoutView release], layoutView = nil;
+    [layoutView release], layoutView = nil;
     [super dealloc];
 }
 

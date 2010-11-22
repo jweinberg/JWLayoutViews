@@ -27,8 +27,8 @@
 
 @interface WrapLayoutTestViewController : UIViewController {
 
-	JWWrapLayoutView *layoutView;
-	UIEdgeInsets insets;
+    JWWrapLayoutView *layoutView;
+    UIEdgeInsets insets;
 }
 
 - (IBAction)addTestView:(id)sender;

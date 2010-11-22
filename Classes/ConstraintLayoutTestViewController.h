@@ -26,7 +26,7 @@
 @class JWConstraintLayoutView;
 
 @interface ConstraintLayoutTestViewController : UIViewController {
-	JWConstraintLayoutView *layoutView;
+    JWConstraintLayoutView *layoutView;
 }
 
 @property (nonatomic, retain) IBOutlet JWConstraintLayoutView *layoutView;

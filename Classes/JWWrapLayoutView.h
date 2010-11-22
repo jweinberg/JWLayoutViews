@@ -26,24 +26,24 @@
 
 typedef enum
 {
-	JWVerticalRowAlignmentTop,
-	JWVerticalRowAlignmentCenter,
-	JWVerticalRowAlignmentBottom,
+    JWVerticalRowAlignmentTop,
+    JWVerticalRowAlignmentCenter,
+    JWVerticalRowAlignmentBottom,
 }JWVerticalRowAlignment;
 
 typedef enum
 {
-	JWHorizontalRowAlignmentLeft,
-	JWHorizontalRowAlignmentCenter,
-	JWHorizontalRowAlignmentRight,
+    JWHorizontalRowAlignmentLeft,
+    JWHorizontalRowAlignmentCenter,
+    JWHorizontalRowAlignmentRight,
 }JWHorizontalRowAlignment;
 
 @interface JWWrapLayoutView : UIView 
 {
-	UIEdgeInsets subviewMargins;
-	CGFloat minRowHeight;
-	JWVerticalRowAlignment verticalRowAlignment;
-	JWHorizontalRowAlignment horizontalRowAlignment;
+    UIEdgeInsets subviewMargins;
+    CGFloat minRowHeight;
+    JWVerticalRowAlignment verticalRowAlignment;
+    JWHorizontalRowAlignment horizontalRowAlignment;
 }
 
 @property (nonatomic, assign) CGFloat minRowHeight;
