@@ -14,8 +14,11 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2899E5220DE3E06400AC0155 /* LayoutTestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* LayoutTestViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		28D7ACF80DDB3853001CB0EB /* LayoutTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* LayoutTestViewController.m */; };
+		28D7ACF80DDB3853001CB0EB /* WrapLayoutTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* WrapLayoutTestViewController.m */; };
 		8255E9751298E6D500B9A6AE /* JWWrapLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8255E9741298E6D500B9A6AE /* JWWrapLayoutView.m */; };
+		828D6644129ADF56004CC770 /* JWConstraintLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 828D6643129ADF56004CC770 /* JWConstraintLayoutView.m */; };
+		828D668A129AE8B4004CC770 /* ConstraintLayoutTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 828D6688129AE8B4004CC770 /* ConstraintLayoutTestViewController.m */; };
+		828D668B129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 828D6689129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,12 +30,17 @@
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* LayoutTestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutTestViewController.xib; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		28D7ACF60DDB3853001CB0EB /* LayoutTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutTestViewController.h; sourceTree = "<group>"; };
-		28D7ACF70DDB3853001CB0EB /* LayoutTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutTestViewController.m; sourceTree = "<group>"; };
+		28D7ACF60DDB3853001CB0EB /* WrapLayoutTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WrapLayoutTestViewController.h; sourceTree = "<group>"; };
+		28D7ACF70DDB3853001CB0EB /* WrapLayoutTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WrapLayoutTestViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* LayoutTest_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutTest_Prefix.pch; sourceTree = "<group>"; };
 		8255E9731298E6D500B9A6AE /* JWWrapLayoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWWrapLayoutView.h; sourceTree = "<group>"; };
 		8255E9741298E6D500B9A6AE /* JWWrapLayoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWWrapLayoutView.m; sourceTree = "<group>"; };
+		828D6642129ADF56004CC770 /* JWConstraintLayoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWConstraintLayoutView.h; sourceTree = "<group>"; };
+		828D6643129ADF56004CC770 /* JWConstraintLayoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWConstraintLayoutView.m; sourceTree = "<group>"; };
+		828D6687129AE8B4004CC770 /* ConstraintLayoutTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstraintLayoutTestViewController.h; sourceTree = "<group>"; };
+		828D6688129AE8B4004CC770 /* ConstraintLayoutTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintLayoutTestViewController.m; sourceTree = "<group>"; };
+		828D6689129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ConstraintLayoutTestViewController.xib; path = Classes/ConstraintLayoutTestViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LayoutTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LayoutTest-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,12 +61,13 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				828D666D129AE863004CC770 /* LayoutViews */,
 				1D3623240D0F684500981E51 /* LayoutTestAppDelegate.h */,
 				1D3623250D0F684500981E51 /* LayoutTestAppDelegate.m */,
-				28D7ACF60DDB3853001CB0EB /* LayoutTestViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* LayoutTestViewController.m */,
-				8255E9731298E6D500B9A6AE /* JWWrapLayoutView.h */,
-				8255E9741298E6D500B9A6AE /* JWWrapLayoutView.m */,
+				28D7ACF60DDB3853001CB0EB /* WrapLayoutTestViewController.h */,
+				28D7ACF70DDB3853001CB0EB /* WrapLayoutTestViewController.m */,
+				828D6687129AE8B4004CC770 /* ConstraintLayoutTestViewController.h */,
+				828D6688129AE8B4004CC770 /* ConstraintLayoutTestViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -95,6 +104,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				828D6689129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib */,
 				2899E5210DE3E06400AC0155 /* LayoutTestViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* LayoutTest-Info.plist */,
@@ -110,6 +120,17 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		828D666D129AE863004CC770 /* LayoutViews */ = {
+			isa = PBXGroup;
+			children = (
+				8255E9731298E6D500B9A6AE /* JWWrapLayoutView.h */,
+				8255E9741298E6D500B9A6AE /* JWWrapLayoutView.m */,
+				828D6642129ADF56004CC770 /* JWConstraintLayoutView.h */,
+				828D6643129ADF56004CC770 /* JWConstraintLayoutView.m */,
+			);
+			name = LayoutViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +184,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* LayoutTestViewController.xib in Resources */,
+				828D668B129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,8 +197,10 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* LayoutTestAppDelegate.m in Sources */,
-				28D7ACF80DDB3853001CB0EB /* LayoutTestViewController.m in Sources */,
+				28D7ACF80DDB3853001CB0EB /* WrapLayoutTestViewController.m in Sources */,
 				8255E9751298E6D500B9A6AE /* JWWrapLayoutView.m in Sources */,
+				828D6644129ADF56004CC770 /* JWConstraintLayoutView.m in Sources */,
+				828D668A129AE8B4004CC770 /* ConstraintLayoutTestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +243,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -233,7 +257,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

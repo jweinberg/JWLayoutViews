@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1024</int>
-		<string key="IBDocument.SystemVersion">10D571</string>
-		<string key="IBDocument.InterfaceBuilderVersion">786</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
-		<string key="IBDocument.HIToolboxVersion">460.00</string>
+		<int key="IBDocument.SystemTarget">1056</int>
+		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">112</string>
+			<string key="NS.object.0">132</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="10"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -41,7 +40,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIViewController" id="943309135">
-				<string key="IBUINibName">LayoutTestViewController</string>
+				<string key="IBUINibName">ConstraintLayoutTestViewController</string>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="interfaceOrientation">1</int>
@@ -148,7 +147,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIApplication</string>
 					<string>UIResponder</string>
-					<string>LayoutTestViewController</string>
+					<string>ConstraintLayoutTestViewController</string>
 					<string>{{234, 376}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{525, 346}, {320, 480}}</string>
@@ -179,11 +178,30 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">UIWindow</string>
+					<string key="className">ConstraintLayoutTestViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">layoutView</string>
+						<string key="NS.object.0">JWConstraintLayoutView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">layoutView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">layoutView</string>
+							<string key="candidateClassName">JWConstraintLayoutView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/ConstraintLayoutTestViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">JWConstraintLayoutView</string>
 					<string key="superclassName">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBUserSource</string>
-						<string key="minorKey"/>
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/JWConstraintLayoutView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -198,7 +216,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>LayoutTestViewController</string>
+							<string>ConstraintLayoutTestViewController</string>
 							<string>UIWindow</string>
 						</object>
 					</object>
@@ -213,7 +231,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">viewController</string>
-								<string key="candidateClassName">LayoutTestViewController</string>
+								<string key="candidateClassName">ConstraintLayoutTestViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">window</string>
@@ -235,11 +253,11 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">LayoutTestViewController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="className">UIWindow</string>
+					<string key="superclassName">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/LayoutTestViewController.h</string>
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 			</object>
@@ -369,6 +387,13 @@
 					<string key="className">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">UIKit.framework/Headers/UIPrintFormatter.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UITextField.h</string>
 					</object>
 				</object>
@@ -430,7 +455,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<integer value="1024" key="NS.object.0"/>
+			<integer value="1056" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
@@ -439,6 +464,6 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">LayoutTest.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">112</string>
+		<string key="IBCocoaTouchPluginVersion">132</string>
 	</data>
 </archive>

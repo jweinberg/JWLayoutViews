@@ -24,15 +24,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class LayoutTestViewController;
+@class ConstraintLayoutTestViewController;
 
 @interface LayoutTestAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-    LayoutTestViewController *viewController;
+    ConstraintLayoutTestViewController *viewController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet LayoutTestViewController *viewController;
+@property (nonatomic, retain) IBOutlet ConstraintLayoutTestViewController *viewController;
 
 @end
 
