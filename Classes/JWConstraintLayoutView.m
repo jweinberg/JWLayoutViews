@@ -69,7 +69,12 @@
 
 - (CGFloat)relativeValue;
 {
-	CGRect frame = [relativeView frame];
+	CGRect frame = CGRectZero;
+	if (relativeView)
+		frame = [relativeView frame];
+	else
+		frame = [[view superview] frame];
+	
 	switch (relativeAttribute)
 	{
 		case kJWConstraintAttributeMinX:

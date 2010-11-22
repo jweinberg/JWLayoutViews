@@ -101,9 +101,9 @@
 												  offset:0];
 	
 	JWConstraint * x2 = [JWConstraint constraintWithView:a2
-											   attribute:kJWConstraintAttributeMinX
-											  relativeTo:awesomeView 
-											   attribute:kJWConstraintAttributeMinX
+											   attribute:kJWConstraintAttributeMidX
+											  relativeTo:nil 
+											   attribute:kJWConstraintAttributeMidX
 												   scale:1.0
 												  offset:0];
 	
