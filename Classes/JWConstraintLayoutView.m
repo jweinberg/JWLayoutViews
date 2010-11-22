@@ -55,6 +55,34 @@
                                         offset:aOffset] autorelease];
 }
 
++ (id)constraintWithView:(UIView*)aView
+               attribute:(JWConstraintAttribute)anAttribute 
+              relativeTo:(UIView*)aRelativeView 
+               attribute:(JWConstraintAttribute)aRelativeAttribute;
+{
+    return [[[JWConstraint alloc] initWithView:aView
+                                     attribute:anAttribute
+                                    relativeTo:aRelativeView
+                                     attribute:aRelativeAttribute
+                                         scale:1.0
+                                        offset:0] autorelease];
+    
+}
+
++ (id)constraintWithView:(UIView*)aView
+               attribute:(JWConstraintAttribute)anAttribute 
+              relativeTo:(UIView*)aRelativeView 
+               attribute:(JWConstraintAttribute)aRelativeAttribute 
+                  offset:(CGFloat)aOffset;
+{
+    return [[[JWConstraint alloc] initWithView:aView
+                                     attribute:anAttribute
+                                    relativeTo:aRelativeView
+                                     attribute:aRelativeAttribute
+                                         scale:1.0
+                                        offset:aOffset] autorelease];
+}
+
 - (id)initWithView:(UIView*)aView
          attribute:(JWConstraintAttribute)anAttribute 
         relativeTo:(UIView*)aRelativeView 
@@ -93,21 +121,21 @@
     
     switch (relativeAttribute)
     {
-        case kJWConstraintAttributeMinX:
+        case kJWConstraintMinX:
             return CGRectGetMinX(frame);
-        case kJWConstraintAttributeMidX:
+        case kJWConstraintMidX:
             return CGRectGetMidX(frame);
-        case kJWConstraintAttributeMaxX:
+        case kJWConstraintMaxX:
             return CGRectGetMaxX(frame);
-        case kJWConstraintAttributeWidth:
+        case kJWConstraintWidth:
             return CGRectGetWidth(frame);
-        case kJWConstraintAttributeMinY:
+        case kJWConstraintMinY:
             return CGRectGetMinY(frame);
-        case kJWConstraintAttributeMidY:
+        case kJWConstraintMidY:
             return CGRectGetMidY(frame);
-        case kJWConstraintAttributeMaxY:
+        case kJWConstraintMaxY:
             return CGRectGetMaxY(frame);
-        case kJWConstraintAttributeHeight:
+        case kJWConstraintHeight:
             return CGRectGetHeight(frame);
     }
     return 0.0f;
@@ -122,28 +150,29 @@
     
     switch (attribute)
     {
-        case kJWConstraintAttributeMinX:
+        case kJWConstraintMinX:
             frame.origin.x = rVal;
             break;
-        case kJWConstraintAttributeMidX:
+        case kJWConstraintMidX:
             frame.origin.x = rVal - frame.size.width / 2.0f;
             break;
-        case kJWConstraintAttributeMaxX:
-            frame.origin.x = rVal - frame.size.width;
+        case kJWConstraintMaxX:
+            frame.size.width = rVal - frame.origin.x;
             break;
-        case kJWConstraintAttributeWidth:
+        case kJWConstraintWidth:
             frame.size.width = rVal;
             break;            
-        case kJWConstraintAttributeMinY:
+        case kJWConstraintMinY:
             frame.origin.y = rVal;
             break;            
-        case kJWConstraintAttributeMidY:
+        case kJWConstraintMidY:
             frame.origin.y = rVal - frame.size.height / 2.0f;
             break;            
-        case kJWConstraintAttributeMaxY:
-            frame.origin.y = rVal - frame.size.height;
+        case kJWConstraintMaxY:
+            frame.size.height = rVal - frame.origin.y;
+            
             break;            
-        case kJWConstraintAttributeHeight:
+        case kJWConstraintHeight:
             frame.size.height = rVal;
             break;            
     }

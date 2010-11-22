@@ -24,19 +24,20 @@
 
 #import "ConstraintLayoutTestViewController.h"
 #import "JWConstraintLayoutView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ConstraintLayoutTestViewController
 @synthesize layoutView;
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
+ - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+ self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+ if (self) {
+ // Custom initialization.
+ }
+ return self;
+ }
+ */
 
 #define UNIFORM_RAND() ((float)rand()/RAND_MAX)
 - (void)sizeAnimate:(UIView*)sender;
@@ -53,94 +54,66 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-
-    UIButton *topView = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [topView addTarget:self action:@selector(sizeAnimate:) forControlEvents:UIControlEventTouchUpInside];
-    [topView setFrame:CGRectMake(100, 100, 50, 50)];
-    [layoutView addSubview:topView];
     
-    UIView *awesomeView = [[UIView alloc] init];
-    [awesomeView setBackgroundColor:[UIColor greenColor]];
-    [layoutView addSubview:awesomeView];
+    UIView *viewA = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    viewA.frame = CGRectMake(0.0,0.0,100.0,25.0);
+    viewA.layer.borderWidth = 2.0;
     
-    UIView *a2 = [[UIView alloc] init];
-    [a2 setBackgroundColor:[UIColor redColor]];
-    [layoutView addSubview:a2];
     
-    JWConstraint *width = [JWConstraint constraintWithView:awesomeView 
-                                                      attribute:kJWConstraintAttributeWidth 
-                                                     relativeTo:topView
-                                                      attribute:kJWConstraintAttributeWidth
-                                                          scale:.5f
-                                                         offset:0];
+    [layoutView addSubview:viewA];
     
-    JWConstraint *height = [JWConstraint constraintWithView:awesomeView 
-                                                 attribute:kJWConstraintAttributeHeight 
-                                                relativeTo:topView
-                                                 attribute:kJWConstraintAttributeHeight
-                                                     scale:2.f
-                                                    offset:0];
+    [layoutView addConstraint:[JWConstraint 
+                               constraintWithView:viewA
+                               attribute:kJWConstraintMidY
+                               relativeTo:nil
+                               attribute:kJWConstraintMidY]];
     
-    JWConstraint *x = [JWConstraint constraintWithView:awesomeView 
-                                                  attribute:kJWConstraintAttributeMinX 
-                                                 relativeTo:topView
-                                                  attribute:kJWConstraintAttributeMaxX
-                                                      scale:1.0
-                                                     offset:10];
+    [layoutView addConstraint:[JWConstraint constraintWithView:viewA
+                                                     attribute:kJWConstraintMidX
+                                                    relativeTo:nil
+                                                     attribute:kJWConstraintMidX]];
     
-    JWConstraint *y = [JWConstraint constraintWithView:awesomeView 
-                                             attribute:kJWConstraintAttributeMinY 
-                                            relativeTo:topView
-                                             attribute:kJWConstraintAttributeMinY
-                                                 scale:1.0
-                                                offset:0];
     
-    JWConstraint * h2 = [JWConstraint constraintWithView:a2
-                                               attribute:kJWConstraintAttributeHeight
-                                              relativeTo:awesomeView 
-                                               attribute:kJWConstraintAttributeWidth
-                                                   scale:1.0
-                                                  offset:0];
+    UIView *viewB = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    viewB.backgroundColor = [UIColor redColor];
+    viewB.layer.borderWidth = 2.0;
     
-    JWConstraint * w2 = [JWConstraint constraintWithView:a2
-                                               attribute:kJWConstraintAttributeWidth
-                                              relativeTo:awesomeView 
-                                               attribute:kJWConstraintAttributeWidth
-                                                   scale:1.0
-                                                  offset:0];
+    [layoutView addSubview:viewB];
     
-    JWConstraint * y2 = [JWConstraint constraintWithView:a2
-                                               attribute:kJWConstraintAttributeMinY
-                                              relativeTo:awesomeView 
-                                               attribute:kJWConstraintAttributeMaxY
-                                                   scale:1.0
-                                                  offset:0];
+    [layoutView addConstraint:[JWConstraint  constraintWithView:viewB
+                                                      attribute:kJWConstraintWidth
+                                                     relativeTo:viewA
+                                                      attribute:kJWConstraintWidth]];
     
-    JWConstraint * x2 = [JWConstraint constraintWithView:a2
-                                               attribute:kJWConstraintAttributeMidX
-                                              relativeTo:nil 
-                                               attribute:kJWConstraintAttributeMidX
-                                                   scale:1.0
-                                                  offset:0];
+    [layoutView addConstraint:[JWConstraint constraintWithView:viewB
+                                                     attribute:kJWConstraintMidX
+                                                    relativeTo:viewA
+                                                     attribute:kJWConstraintMidX]];
     
-    [layoutView addConstraint:width];
-    [layoutView addConstraint:height];
-    [layoutView addConstraint:x];
-    [layoutView addConstraint:y];
-    [layoutView addConstraint:h2];
-    [layoutView addConstraint:w2];
-    [layoutView addConstraint:y2];
-    [layoutView addConstraint:x2];
+    
+    [layoutView addConstraint:[JWConstraint constraintWithView:viewB
+                                                     attribute:kJWConstraintMinY
+                                                    relativeTo:viewA
+                                                     attribute:kJWConstraintMaxY
+                                                        offset:10.0]];
+    
+    [layoutView addConstraint:[JWConstraint constraintWithView:viewB
+                                                     attribute:kJWConstraintMaxY
+                                                    relativeTo:nil
+                                                     attribute:kJWConstraintMaxY
+                                                        offset:-10.0]];
+    
+ 
 }
 
 
 /*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+ // Override to allow orientations other than the default portrait orientation.
+ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+ // Return YES for supported orientations.
+ return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ }
+ */
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

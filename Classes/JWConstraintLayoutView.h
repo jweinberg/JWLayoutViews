@@ -24,14 +24,14 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kJWConstraintAttributeMinX,
-    kJWConstraintAttributeMidX,
-    kJWConstraintAttributeMaxX,
-    kJWConstraintAttributeWidth,
-    kJWConstraintAttributeMinY,
-    kJWConstraintAttributeMidY,
-    kJWConstraintAttributeMaxY,
-    kJWConstraintAttributeHeight,
+    kJWConstraintMinX,
+    kJWConstraintMidX,
+    kJWConstraintMaxX,
+    kJWConstraintWidth,
+    kJWConstraintMinY,
+    kJWConstraintMidY,
+    kJWConstraintMaxY,
+    kJWConstraintHeight,
 }JWConstraintAttribute;
 
 @interface JWConstraint : NSObject
@@ -50,6 +50,17 @@ typedef enum {
                attribute:(JWConstraintAttribute)aRelativeAttribute 
                    scale:(CGFloat)aScale 
                   offset:(CGFloat)aOffset;
+
++ (id)constraintWithView:(UIView*)aView
+               attribute:(JWConstraintAttribute)anAttribute 
+              relativeTo:(UIView*)aRelativeView 
+               attribute:(JWConstraintAttribute)aRelativeAttribute 
+                  offset:(CGFloat)aOffset;
+
++ (id)constraintWithView:(UIView*)aView
+               attribute:(JWConstraintAttribute)anAttribute 
+              relativeTo:(UIView*)aRelativeView 
+               attribute:(JWConstraintAttribute)aRelativeAttribute;
 
 - (id)initWithView:(UIView*)aView
          attribute:(JWConstraintAttribute)anAttribute 
