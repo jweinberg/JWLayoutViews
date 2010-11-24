@@ -228,6 +228,7 @@
 + (id)nodeWithConstraints:(NSArray*)aConstraint;
 - (id)initWithConstraints:(NSArray*)aConstraint;
 - (void)addDependancy:(JWConstraintGraphNode*)aNode;
+- (void)removeDependancy:(JWConstraintGraphNode*)aNode;
 - (NSArray*)constraints;
 - (NSArray*)dependancies;
 
@@ -261,6 +262,12 @@
 {
     if (![dependancies containsObject:aNode])
         [dependancies addObject:aNode];
+}
+
+- (void)removeDependancy:(JWConstraintGraphNode*)aNode;
+{
+    if ([dependancies containsObject:aNode])
+        [dependancies removeObject:aNode];
 }
 
 - (NSArray*)dependancies;
@@ -423,14 +430,27 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
             }
         }
     }
+    //Need to go through and clean dependancies as they get solved
+    
     
     //Sort based on the number of dependancies in the nodes
     [nodes sortUsingFunction:compare_deps context:NULL];
     
-    //These should go in order now?
-    for (JWConstraintGraphNode *node in nodes)
+    NSMutableArray *nodesLeft = [NSMutableArray arrayWithArray:nodes];
+    
+    while ([nodesLeft count])
     {
-        [self solveAxis:[node constraints]];
+        JWConstraintGraphNode *firstNode = [nodesLeft objectAtIndex:0];
+        [nodesLeft removeObjectAtIndex:0];
+        
+        NSLog(@"Solving for: %@", firstNode);
+        [self solveAxis:[firstNode constraints]];
+        
+        for (JWConstraintGraphNode *node in nodesLeft)
+        {
+            [node removeDependancy:firstNode];
+        }
+        [nodesLeft sortUsingFunction:compare_deps context:NULL];
     }
 }
 

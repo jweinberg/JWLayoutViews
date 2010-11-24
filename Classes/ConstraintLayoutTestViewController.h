@@ -27,7 +27,10 @@
 
 @interface ConstraintLayoutTestViewController : UIViewController {
     JWConstraintLayoutView *layoutView;
+    UIView *center;
 }
+
+- (IBAction)centerHeight:(id)sender;
 
 @property (nonatomic, retain) IBOutlet JWConstraintLayoutView *layoutView;
 @end
