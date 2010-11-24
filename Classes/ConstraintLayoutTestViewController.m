@@ -39,6 +39,11 @@
  }
  */
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+    return YES;
+}
+
 #define UNIFORM_RAND() ((float)rand()/RAND_MAX)
 - (void)sizeAnimate:(UIView*)sender;
 {
