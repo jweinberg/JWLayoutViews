@@ -118,27 +118,36 @@
         frame = [relativeView frame];
     else
         frame = [[view superview] frame];
-    
+ 
+    CGFloat rVal = 0.0f;
     switch (relativeAttribute)
     {
         case kJWConstraintMinX:
-            return CGRectGetMinX(frame);
+            rVal = CGRectGetMinX(frame);
+            break;
         case kJWConstraintMidX:
-            return CGRectGetMidX(frame);
+            rVal = CGRectGetMidX(frame);
+            break;
         case kJWConstraintMaxX:
-            return CGRectGetMaxX(frame);
+            rVal = CGRectGetMaxX(frame);
+            break;
         case kJWConstraintWidth:
-            return CGRectGetWidth(frame);
+            rVal = CGRectGetWidth(frame);
+            break;
         case kJWConstraintMinY:
-            return CGRectGetMinY(frame);
+            rVal = CGRectGetMinY(frame);
+            break;
         case kJWConstraintMidY:
-            return CGRectGetMidY(frame);
+            rVal = CGRectGetMidY(frame);
+            break;
         case kJWConstraintMaxY:
-            return CGRectGetMaxY(frame);
+            rVal = CGRectGetMaxY(frame);
+            break;
         case kJWConstraintHeight:
-            return CGRectGetHeight(frame);
+            rVal = CGRectGetHeight(frame);
+            break;
     }
-    return 0.0f;
+    return (rVal * scale) + offset;
 }
 
 - (void)applyConstraint;
@@ -170,7 +179,6 @@
             break;            
         case kJWConstraintMaxY:
             frame.size.height = rVal - frame.origin.y;
-            
             break;            
         case kJWConstraintHeight:
             frame.size.height = rVal;
@@ -180,10 +188,120 @@
     view.frame = frame;
 }
 
+- (NSString*)attributeToString:(JWConstraintAttribute)aAttribute;
+{
+    switch (aAttribute)
+    {
+        case kJWConstraintMinX:
+            return @"Min-X";
+        case kJWConstraintMidX:
+            return @"Mid-X";
+        case kJWConstraintMaxX:
+            return @"Max-X";
+        case kJWConstraintWidth:
+            return @"Width";
+        case kJWConstraintMinY:
+            return @"Min-Y";
+        case kJWConstraintMidY:
+            return @"Mid-Y";
+        case kJWConstraintMaxY:
+            return @"Max-Y";
+        case kJWConstraintHeight:
+            return @"Height";
+    }
+    return @"";
+}
+
+- (NSString*)description;
+{
+    return [NSString stringWithFormat:@"%p (%@) depends on %p (%@)", view, [self attributeToString:attribute], relativeView, [self attributeToString:relativeAttribute]];
+}
+
 @end
+
+@interface JWConstraintGraphNode : NSObject
+{
+    NSArray *constraints;
+    NSMutableArray *dependancies;
+}
+
++ (id)nodeWithConstraints:(NSArray*)aConstraint;
+- (id)initWithConstraints:(NSArray*)aConstraint;
+- (void)addDependancy:(JWConstraintGraphNode*)aNode;
+- (NSArray*)constraints;
+- (NSArray*)dependancies;
+
+@end
+
+@implementation JWConstraintGraphNode
+
++ (id)nodeWithConstraints:(NSArray*)theConstraints;
+{
+    return [[[JWConstraintGraphNode alloc] initWithConstraints:theConstraints] autorelease];
+}
+
+- (id)initWithConstraints:(NSArray*)theConstraints;
+{
+    if ((self = [super init]))
+    {
+        constraints = [theConstraints copy];
+        dependancies = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void)dealloc;
+{
+    [constraints release], constraints = nil;
+    [dependancies release], dependancies = nil;
+    [super dealloc];
+}
+
+- (void)addDependancy:(JWConstraintGraphNode*)aNode;
+{
+    if (![dependancies containsObject:aNode])
+        [dependancies addObject:aNode];
+}
+
+- (NSArray*)dependancies;
+{
+    return dependancies;
+}
+
+- (NSArray*)constraints;
+{
+    return constraints;
+}
+
+- (NSString*)description:(NSUInteger)tabLevel;
+{
+    NSMutableString *str = [NSMutableString string];
+    for (int i = 0; i < tabLevel; ++i)
+        [str appendString:@"  "];
+    [str appendFormat:@"%@\n",[constraints description]];
+    for (JWConstraintGraphNode *node in dependancies)
+    {
+        for (int i = 0; i < tabLevel + 1; ++i)
+            [str appendString:@"  "];
+        [str appendString:@"|\n"];
+        [str appendFormat:@"%@", [node description:tabLevel+1]];
+    }
+    return [NSString stringWithString:str];
+}
+
+- (NSString*)description;
+{
+    return [NSString stringWithFormat:@"constraints: %@ dependancies:%d",constraints, [dependancies count]];
+}
+
+@end
+
+
 
 @interface JWConstraintLayoutView ()
 - (void)setupDefaults;
+- (void)solveConstraints;
+- (void)solveAxis:(NSArray*)axis;
 @end
 
 
@@ -217,8 +335,7 @@
 - (void)layoutSubviews;
 {
     [super layoutSubviews];
-    for (JWConstraint *constraint in constraints)
-        [constraint applyConstraint];
+    [self solveConstraints];
 }
 
 #pragma mark Constraint Managment
@@ -238,6 +355,243 @@
 - (void)setupDefaults;
 {
     constraints = [[NSMutableArray alloc] init];
+}
+
+#define ATTRIBUTE_TO_AXIS(A) ({__typeof(A) __A = A; __A == kJWConstraintMinX || \
+                                                    __A == kJWConstraintMidX || \
+                                                    __A == kJWConstraintMaxX || \
+                                                    __A == kJWConstraintWidth ? 0 : 1;})
+
+NSInteger compare_deps(id arg1, id arg2, void *arg3)
+{
+    JWConstraintGraphNode *n1 = arg1;
+    JWConstraintGraphNode *n2 = arg2;
+    
+    return [[n1 dependancies] count] - [[n2 dependancies] count];
+}
+
+- (void)solveConstraints;
+{
+    //Seperate into arrays of constraints on views
+    //Want to use views as keys, so need to use lower level dict
+    CFMutableDictionaryRef viewConstraintsDict = CFDictionaryCreateMutable(NULL, 0, NULL, &kCFTypeDictionaryValueCallBacks);
+    
+    for (JWConstraint *constraint in constraints)
+    {
+        NSArray *viewConstraintsAxis = [(id)viewConstraintsDict objectForKey:[constraint view]];
+        if (!viewConstraintsAxis)
+        {
+            viewConstraintsAxis = [NSArray arrayWithObjects:[NSMutableArray array], [NSMutableArray array], nil];
+            CFDictionarySetValue(viewConstraintsDict, [constraint view], viewConstraintsAxis);
+        }
+        [[viewConstraintsAxis objectAtIndex:ATTRIBUTE_TO_AXIS([constraint attribute])] addObject:constraint];
+    }
+    
+    NSMutableArray *nodes = [NSMutableArray array];
+    for (NSArray *axii in [(id)viewConstraintsDict allValues])
+    {
+        if ([[axii objectAtIndex:0] count])
+            [nodes addObject:[JWConstraintGraphNode nodeWithConstraints:[axii objectAtIndex:0]]];
+        if ([[axii objectAtIndex:1] count])
+            [nodes addObject:[JWConstraintGraphNode nodeWithConstraints:[axii objectAtIndex:1]]];
+    }
+  
+    
+    CFRelease(viewConstraintsDict);
+    //Attach nodes (better way than n^2?)
+    //For each node
+    for (JWConstraintGraphNode *node in nodes)
+    {
+        //Check all of its values
+        for (JWConstraint * constraint in [node constraints])
+        {
+            //Against every other node
+            for (JWConstraintGraphNode *otherNode in nodes)
+            {
+                if (otherNode == node)
+                    continue;
+                
+                for (JWConstraint *constraint2 in [otherNode constraints])
+                {
+                    if ([constraint relativeView] == [constraint2 view] && 
+                        ATTRIBUTE_TO_AXIS([constraint relativeAttribute]) == ATTRIBUTE_TO_AXIS([constraint2 attribute]))
+                    {
+                        [node addDependancy:otherNode];
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    //Sort based on the number of dependancies in the nodes
+    [nodes sortUsingFunction:compare_deps context:NULL];
+    
+    //These should go in order now?
+    for (JWConstraintGraphNode *node in nodes)
+    {
+        [self solveAxis:[node constraints]];
+    }
+}
+
+CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL isYAxis)
+{
+    CGFloat val = 0.0f;
+    
+    JWConstraintAttribute attribute = axisVal << (isYAxis ? 4 : 0);
+    
+    switch (attribute)
+    {
+        case kJWConstraintMinX:
+            return CGRectGetMinX(frame);
+        case kJWConstraintMidX:
+            return CGRectGetMidX(frame);
+        case kJWConstraintMaxX:
+            return CGRectGetMaxX(frame);
+        case kJWConstraintWidth:
+            return CGRectGetWidth(frame);
+        case kJWConstraintMinY:
+            return CGRectGetMinY(frame);
+        case kJWConstraintMidY:
+            return CGRectGetMidY(frame);
+        case kJWConstraintMaxY:
+            return CGRectGetMaxY(frame);
+        case kJWConstraintHeight:
+            return CGRectGetHeight(frame);
+    }
+    
+    return val;
+}
+
+- (void)solveAxis:(NSArray*)axis;
+{
+    //There are 4 possible entries on each axis
+    //Min, Mid, Max and Size
+    //At most 2 should be specified per axis
+    //Each pair/single needs to be solved individually?
+    
+    uint8_t combined = 0x00;
+    
+    UIView *view = [[axis objectAtIndex:0] view];
+    CGRect rect = [view frame];
+    
+    CGFloat minR = CGFLOAT_MAX;
+    CGFloat midR = CGFLOAT_MAX;
+    CGFloat maxR = CGFLOAT_MAX;
+    CGFloat sizeR = CGFLOAT_MAX;
+    
+    for (JWConstraint *constraint in axis)
+    {
+        combined |= [constraint attribute];
+        
+        CGFloat rel = [constraint relativeValue];
+        switch ([constraint attribute] >= 1 << 4 ? [constraint attribute] >> 4 : [constraint attribute])
+        {
+            case kJWConstraintMin:
+                minR = rel;
+                break;
+            case kJWConstraintMid:
+                midR = rel;
+                break;
+            case kJWConstraintMax:
+                maxR = rel;
+                break;
+            case kJWConstraintSize:
+                sizeR = rel;
+                break;
+        }
+    }
+    
+    BOOL isYAxis = combined >= 1 << 4;
+    
+    if (isYAxis)
+    {
+        combined >>= 4;
+    }
+    
+    CGFloat min = AxisAttributeValue(rect, kJWConstraintMin, isYAxis);
+    CGFloat mid = AxisAttributeValue(rect, kJWConstraintMid, isYAxis);
+    CGFloat max = AxisAttributeValue(rect, kJWConstraintMax, isYAxis);
+    CGFloat size = AxisAttributeValue(rect, kJWConstraintSize, isYAxis);
+    
+    switch (combined) 
+    {
+        case kJWConstraintMin:
+        {
+            //Only change the min value, max need to stay
+            CGFloat minDiff = minR - min;
+            min += minDiff;
+            //Width doesn't change
+        }
+            break;
+        case kJWConstraintMid:
+        {
+            //Only change the min value, max need to stay
+            CGFloat midDiff = midR - mid;
+            min += midDiff;
+            //Width doesn't change
+        }
+            break;
+        case kJWConstraintMax:
+        {
+            //Only change the min value, max need to stay
+            CGFloat maxDiff = maxR - max;
+            min += maxDiff;
+            //Width doesn't change
+        }
+            break;
+        case kJWConstraintSize:
+            //Shrink around the origin, (0,0)
+            size = sizeR;
+            break;
+        case kJWConstraintMin | kJWConstraintMid:
+            min = minR;
+            mid = midR;
+            max = mid + (mid - min);
+            size = max - min;
+            break;
+        case kJWConstraintMin | kJWConstraintMax:
+            min = minR;
+            size = maxR - minR;
+            break;
+        case kJWConstraintMin | kJWConstraintSize:
+            min = minR;
+            size = sizeR;
+            break;
+        case kJWConstraintMid | kJWConstraintMax:
+            mid = midR;
+            max = maxR;
+            min = mid - (max - mid);
+            size = max - min;
+            break;
+        case kJWConstraintMid | kJWConstraintSize:
+            mid = midR;
+            size = sizeR;
+            CGFloat hSize = size / 2.0;
+            min = mid - hSize;
+            break;
+        case kJWConstraintMax | kJWConstraintSize:
+            max = maxR;
+            size = sizeR;
+            min = max - size;
+            break;
+        default:
+            NSLog(@"What did you dooooooooo!!");
+            break;
+    }
+
+    if (isYAxis)
+    {
+        rect.origin.y = min;
+        rect.size.height = size;
+    }
+    else
+    {
+        rect.origin.x = min;
+        rect.size.width = size;
+    }
+    
+    [view setFrame: rect];
 }
 
 @end

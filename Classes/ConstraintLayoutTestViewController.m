@@ -80,6 +80,7 @@
     
     [layoutView addSubview:viewB];
     
+    
     [layoutView addConstraint:[JWConstraint  constraintWithView:viewB
                                                       attribute:kJWConstraintWidth
                                                      relativeTo:viewA

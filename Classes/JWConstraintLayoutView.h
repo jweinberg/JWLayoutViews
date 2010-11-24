@@ -24,14 +24,21 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kJWConstraintMinX,
-    kJWConstraintMidX,
-    kJWConstraintMaxX,
-    kJWConstraintWidth,
-    kJWConstraintMinY,
-    kJWConstraintMidY,
-    kJWConstraintMaxY,
-    kJWConstraintHeight,
+    kJWConstraintMin = 1 << 0,
+    kJWConstraintMid = 1 << 1,
+    kJWConstraintMax = 1 << 2,
+    kJWConstraintSize = 1 << 3,
+}JWConstraintAxisValues;
+
+typedef enum {
+    kJWConstraintMinX = 1 << 0,
+    kJWConstraintMidX = 1 << 1,
+    kJWConstraintMaxX = 1 << 2,
+    kJWConstraintWidth = 1 << 3,
+    kJWConstraintMinY = 1 << 4,
+    kJWConstraintMidY = 1 << 5,
+    kJWConstraintMaxY = 1 << 6,
+    kJWConstraintHeight = 1 << 7,
 }JWConstraintAttribute;
 
 @interface JWConstraint : NSObject
