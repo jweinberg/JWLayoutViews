@@ -56,7 +56,7 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUISlider" id="298484871">
+					<object class="IBUISlider" id="70708595">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{18, 266}, {444, 23}}</string>
@@ -105,7 +105,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">centerHeight:</string>
-						<reference key="source" ref="298484871"/>
+						<reference key="source" ref="70708595"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">13</int>
 					</object>
@@ -127,7 +127,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="458394656"/>
-							<reference ref="298484871"/>
+							<reference ref="70708595"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -149,7 +149,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">7</int>
-						<reference key="object" ref="298484871"/>
+						<reference key="object" ref="70708595"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>

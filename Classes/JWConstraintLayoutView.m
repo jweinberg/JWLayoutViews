@@ -443,7 +443,7 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
         JWConstraintGraphNode *firstNode = [nodesLeft objectAtIndex:0];
         [nodesLeft removeObjectAtIndex:0];
         
-        NSLog(@"Solving for: %@", firstNode);
+        //NSLog(@"Solving for: %@", firstNode);
         [self solveAxis:[firstNode constraints]];
         
         for (JWConstraintGraphNode *node in nodesLeft)

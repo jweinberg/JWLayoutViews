@@ -61,7 +61,7 @@
     [super viewDidLoad];
     
     center = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-    center.frame = CGRectMake(0.0,0.0,100.0,25.0);
+    center.frame = CGRectMake(0.0,0.0,25.0,25.0);
     center.layer.borderWidth = 2.0;
     
     
