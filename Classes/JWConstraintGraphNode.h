@@ -22,21 +22,20 @@
 //  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <UIKit/UIKit.h>
-#import "JWConstraint.h"
+#import <Foundation/Foundation.h>
 
-typedef enum {
-    kJWConstraintMin = 1 << 0,
-    kJWConstraintMid = 1 << 1,
-    kJWConstraintMax = 1 << 2,
-    kJWConstraintSize = 1 << 3,
-}JWConstraintAxisValues;
-
-@interface JWConstraintLayoutView : UIView 
+@interface JWConstraintGraphNode : NSObject
 {
-    NSMutableSet *constraints;
+    NSArray *constraints;
+    NSMutableArray *dependancies;
 }
 
-- (void)addConstraint:(JWConstraint*)constraint;
-- (void)removeConstraint:(JWConstraint*)constraint;
++ (id)nodeWithConstraints:(NSArray*)aConstraint;
+- (id)initWithConstraints:(NSArray*)aConstraint;
+- (void)addDependancy:(JWConstraintGraphNode*)aNode;
+- (void)removeDependancy:(JWConstraintGraphNode*)aNode;
+- (NSArray*)constraints;
+- (NSArray*)dependancies;
+
 @end
+

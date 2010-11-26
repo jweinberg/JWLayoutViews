@@ -19,6 +19,8 @@
 		828D6644129ADF56004CC770 /* JWConstraintLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 828D6643129ADF56004CC770 /* JWConstraintLayoutView.m */; };
 		828D668A129AE8B4004CC770 /* ConstraintLayoutTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 828D6688129AE8B4004CC770 /* ConstraintLayoutTestViewController.m */; };
 		828D668B129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 828D6689129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib */; };
+		82E9760812A0148800704840 /* JWConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 82E9760712A0148800704840 /* JWConstraint.m */; };
+		82E9762212A0157400704840 /* JWConstraintGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 82E9762112A0157400704840 /* JWConstraintGraphNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,10 @@
 		828D6687129AE8B4004CC770 /* ConstraintLayoutTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstraintLayoutTestViewController.h; sourceTree = "<group>"; };
 		828D6688129AE8B4004CC770 /* ConstraintLayoutTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstraintLayoutTestViewController.m; sourceTree = "<group>"; };
 		828D6689129AE8B4004CC770 /* ConstraintLayoutTestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ConstraintLayoutTestViewController.xib; path = Classes/ConstraintLayoutTestViewController.xib; sourceTree = "<group>"; };
+		82E9760612A0148800704840 /* JWConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWConstraint.h; sourceTree = "<group>"; };
+		82E9760712A0148800704840 /* JWConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWConstraint.m; sourceTree = "<group>"; };
+		82E9762012A0157400704840 /* JWConstraintGraphNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWConstraintGraphNode.h; sourceTree = "<group>"; };
+		82E9762112A0157400704840 /* JWConstraintGraphNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWConstraintGraphNode.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LayoutTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LayoutTest-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,12 +131,24 @@
 		828D666D129AE863004CC770 /* LayoutViews */ = {
 			isa = PBXGroup;
 			children = (
+				82E9760412A0145A00704840 /* Constraints */,
 				8255E9731298E6D500B9A6AE /* JWWrapLayoutView.h */,
 				8255E9741298E6D500B9A6AE /* JWWrapLayoutView.m */,
-				828D6642129ADF56004CC770 /* JWConstraintLayoutView.h */,
-				828D6643129ADF56004CC770 /* JWConstraintLayoutView.m */,
 			);
 			name = LayoutViews;
+			sourceTree = "<group>";
+		};
+		82E9760412A0145A00704840 /* Constraints */ = {
+			isa = PBXGroup;
+			children = (
+				828D6642129ADF56004CC770 /* JWConstraintLayoutView.h */,
+				828D6643129ADF56004CC770 /* JWConstraintLayoutView.m */,
+				82E9760612A0148800704840 /* JWConstraint.h */,
+				82E9760712A0148800704840 /* JWConstraint.m */,
+				82E9762012A0157400704840 /* JWConstraintGraphNode.h */,
+				82E9762112A0157400704840 /* JWConstraintGraphNode.m */,
+			);
+			name = Constraints;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,6 +219,8 @@
 				8255E9751298E6D500B9A6AE /* JWWrapLayoutView.m in Sources */,
 				828D6644129ADF56004CC770 /* JWConstraintLayoutView.m in Sources */,
 				828D668A129AE8B4004CC770 /* ConstraintLayoutTestViewController.m in Sources */,
+				82E9760812A0148800704840 /* JWConstraint.m in Sources */,
+				82E9762212A0157400704840 /* JWConstraintGraphNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
