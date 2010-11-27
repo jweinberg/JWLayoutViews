@@ -27,6 +27,7 @@
 
 @interface JWConstraintLayoutView ()
 - (void)setupDefaults;
+- (void)updateConstraintsGraph;
 - (void)solveConstraints;
 - (void)solveAxis:(NSArray*)axis;
 @end
@@ -56,6 +57,7 @@
 - (void)dealloc 
 {
     [constraints release], constraints = nil;
+    [nodes release], nodes = nil;
     [super dealloc];
 }
 
@@ -66,28 +68,36 @@
 }
 
 #pragma mark Constraint Managment
+- (void)setNeedsConstraintsUpdate;
+{
+    needsConstraintsUpdate = YES;
+}
+
 - (void)addConstraint:(JWConstraint*)constraint;
 {
     [constraints addObject:constraint];
     [self setNeedsLayout];
+    [self setNeedsConstraintsUpdate];
 }
 
 - (void)removeConstraint:(JWConstraint*)constraint;
 {
     [constraints removeObject:constraint];
     [self setNeedsLayout];
+    [self setNeedsConstraintsUpdate];
 }
 
 #pragma mark Private
 - (void)setupDefaults;
 {
     constraints = [[NSMutableArray alloc] init];
+    nodes = [[NSMutableArray alloc] init];
 }
 
 #define ATTRIBUTE_TO_AXIS(A) ({__typeof(A) __A = A; __A == kJWConstraintMinX || \
-                                                    __A == kJWConstraintMidX || \
-                                                    __A == kJWConstraintMaxX || \
-                                                    __A == kJWConstraintWidth ? 0 : 1;})
+__A == kJWConstraintMidX || \
+__A == kJWConstraintMaxX || \
+__A == kJWConstraintWidth ? 0 : 1;})
 
 NSInteger compare_deps(id arg1, id arg2, void *arg3)
 {
@@ -97,8 +107,9 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
     return [[n1 dependancies] count] - [[n2 dependancies] count];
 }
 
-- (void)solveConstraints;
+- (void)updateConstraintsGraph;
 {
+    
     //Seperate into arrays of constraints on views
     //Want to use views as keys, so need to use lower level dict
     CFMutableDictionaryRef viewConstraintsDict = CFDictionaryCreateMutable(NULL, 0, NULL, &kCFTypeDictionaryValueCallBacks);
@@ -114,7 +125,7 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
         [[viewConstraintsAxis objectAtIndex:ATTRIBUTE_TO_AXIS([constraint attribute])] addObject:constraint];
     }
     
-    NSMutableArray *nodes = [NSMutableArray array];
+    [nodes removeAllObjects];
     for (NSArray *axii in [(id)viewConstraintsDict allValues])
     {
         if ([[axii objectAtIndex:0] count])
@@ -122,7 +133,7 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
         if ([[axii objectAtIndex:1] count])
             [nodes addObject:[JWConstraintGraphNode nodeWithConstraints:[axii objectAtIndex:1]]];
     }
-  
+    
     
     CFRelease(viewConstraintsDict);
     //Attach nodes (better way than n^2?)
@@ -155,8 +166,13 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
     
     //Sort based on the number of dependancies in the nodes
     [nodes sortUsingFunction:compare_deps context:NULL];
-    
-    NSMutableArray *nodesLeft = [NSMutableArray arrayWithArray:nodes];
+}
+
+- (void)solveConstraints;
+{
+    if (needsConstraintsUpdate)
+        [self updateConstraintsGraph];
+        NSMutableArray *nodesLeft = [NSMutableArray arrayWithArray:nodes];
     
     while ([nodesLeft count])
     {

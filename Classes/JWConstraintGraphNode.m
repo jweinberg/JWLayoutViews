@@ -72,21 +72,6 @@
 }
 
 #pragma mark Debugging
-- (NSString*)description:(NSUInteger)tabLevel;
-{
-    NSMutableString *str = [NSMutableString string];
-    for (int i = 0; i < tabLevel; ++i)
-        [str appendString:@"  "];
-    [str appendFormat:@"%@\n",[constraints description]];
-    for (JWConstraintGraphNode *node in dependancies)
-    {
-        for (int i = 0; i < tabLevel + 1; ++i)
-            [str appendString:@"  "];
-        [str appendString:@"|\n"];
-        [str appendFormat:@"%@", [node description:tabLevel+1]];
-    }
-    return [NSString stringWithString:str];
-}
 
 - (NSString*)description;
 {
