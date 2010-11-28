@@ -64,6 +64,8 @@
 - (void)layoutSubviews;
 {
     [super layoutSubviews];
+    if (needsConstraintsUpdate)
+        [self updateConstraintsGraph];
     [self solveConstraints];
 }
 
@@ -170,10 +172,8 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
 
 - (void)solveConstraints;
 {
-    if (needsConstraintsUpdate)
-        [self updateConstraintsGraph];
-        NSMutableArray *nodesLeft = [NSMutableArray arrayWithArray:nodes];
-    
+    NSMutableArray *nodesLeft = [NSMutableArray arrayWithArray:nodes];
+
     while ([nodesLeft count])
     {
         JWConstraintGraphNode *firstNode = [nodesLeft objectAtIndex:0];
