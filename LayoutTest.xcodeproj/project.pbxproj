@@ -67,7 +67,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				828D666D129AE863004CC770 /* LayoutViews */,
+				828D666D129AE863004CC770 /* LayoutManager */,
 				1D3623240D0F684500981E51 /* LayoutTestAppDelegate.h */,
 				1D3623250D0F684500981E51 /* LayoutTestAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* WrapLayoutTestViewController.h */,
@@ -128,14 +128,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		828D666D129AE863004CC770 /* LayoutViews */ = {
+		828D666D129AE863004CC770 /* LayoutManager */ = {
 			isa = PBXGroup;
 			children = (
 				82E9760412A0145A00704840 /* Constraints */,
 				8255E9731298E6D500B9A6AE /* JWWrapLayoutView.h */,
 				8255E9741298E6D500B9A6AE /* JWWrapLayoutView.m */,
 			);
-			name = LayoutViews;
+			name = LayoutManager;
 			sourceTree = "<group>";
 		};
 		82E9760412A0145A00704840 /* Constraints */ = {

@@ -32,9 +32,7 @@
 - (void)solveAxis:(NSArray*)axis;
 @end
 
-
 @implementation JWConstraintLayoutView
-
 
 - (id)initWithFrame:(CGRect)frame 
 {
@@ -58,6 +56,7 @@
 {
     [constraints release], constraints = nil;
     [nodes release], nodes = nil;
+    [sortedNodes release], sortedNodes = nil;
     [super dealloc];
 }
 
@@ -94,6 +93,7 @@
 {
     constraints = [[NSMutableArray alloc] init];
     nodes = [[NSMutableArray alloc] init];
+    sortedNodes = [[NSMutableArray alloc] init];
 }
 
 #define ATTRIBUTE_TO_AXIS(A) ({__typeof(A) __A = A; __A == kJWConstraintMinX || \
@@ -106,12 +106,11 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
     JWConstraintGraphNode *n1 = arg1;
     JWConstraintGraphNode *n2 = arg2;
     
-    return [[n1 dependancies] count] - [[n2 dependancies] count];
+    return [[n1 incoming] count] - [[n2 incoming] count];
 }
 
 - (void)updateConstraintsGraph;
 {
-    
     //Seperate into arrays of constraints on views
     //Want to use views as keys, so need to use lower level dict
     CFMutableDictionaryRef viewConstraintsDict = CFDictionaryCreateMutable(NULL, 0, NULL, &kCFTypeDictionaryValueCallBacks);
@@ -156,38 +155,53 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
                     if ([constraint relativeView] == [constraint2 view] && 
                         ATTRIBUTE_TO_AXIS([constraint relativeAttribute]) == ATTRIBUTE_TO_AXIS([constraint2 attribute]))
                     {
-                        [node addDependancy:otherNode];
+                        [node addOutgoing:otherNode];
+                        [otherNode addIncoming:node];
                         break;
                     }
                 }
             }
         }
     }
-    //Need to go through and clean dependancies as they get solved
-    
     
     //Sort based on the number of dependancies in the nodes
     [nodes sortUsingFunction:compare_deps context:NULL];
+    
+    //Do a topological sort
+    NSMutableArray *queue = [NSMutableArray array];
+    for (JWConstraintGraphNode *n in nodes)
+    {
+        if ([[n incoming] count] == 0)
+            [queue addObject:n];
+        else
+            break;
+    }
+    
+    [sortedNodes removeAllObjects];
+    __block void (^visit)(JWConstraintGraphNode *n) = nil;
+    visit = ^(JWConstraintGraphNode *n)
+    {
+      if (!n.visited)
+      {
+          n.visited = YES;
+          for (JWConstraintGraphNode *m in [n outgoing])
+              visit(m);
+          [sortedNodes addObject:n];
+      }
+    };
+    
+    for (JWConstraintGraphNode *n in queue)
+        visit(n);
+    
+    NSLog(@"%@", sortedNodes);
+    
+    needsConstraintsUpdate = NO;
 }
 
 - (void)solveConstraints;
-{
-    NSMutableArray *nodesLeft = [NSMutableArray arrayWithArray:nodes];
-
-    while ([nodesLeft count])
-    {
-        JWConstraintGraphNode *firstNode = [nodesLeft objectAtIndex:0];
-        [nodesLeft removeObjectAtIndex:0];
-        
-        //NSLog(@"Solving for: %@", firstNode);
-        [self solveAxis:[firstNode constraints]];
-        
-        for (JWConstraintGraphNode *node in nodesLeft)
-        {
-            [node removeDependancy:firstNode];
-        }
-        [nodesLeft sortUsingFunction:compare_deps context:NULL];
-    }
+{   
+    for (JWConstraintGraphNode *node in sortedNodes)
+        [self solveAxis:[node constraints]];
 }
 
 CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL isYAxis)

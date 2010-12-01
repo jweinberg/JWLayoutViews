@@ -34,6 +34,7 @@ typedef enum {
 
 @interface JWConstraintLayoutView : UIView 
 {
+    NSMutableArray *sortedNodes;
     NSMutableSet *constraints;
     NSMutableArray *nodes;
     BOOL needsConstraintsUpdate;

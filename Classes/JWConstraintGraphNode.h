@@ -26,16 +26,20 @@
 
 @interface JWConstraintGraphNode : NSObject
 {
+    BOOL visited;
     NSArray *constraints;
-    NSMutableArray *dependancies;
+    NSMutableArray *outgoingEdges;
+    NSMutableArray *incomingEdges;
 }
 
 + (id)nodeWithConstraints:(NSArray*)aConstraint;
 - (id)initWithConstraints:(NSArray*)aConstraint;
-- (void)addDependancy:(JWConstraintGraphNode*)aNode;
-- (void)removeDependancy:(JWConstraintGraphNode*)aNode;
+- (void)addOutgoing:(JWConstraintGraphNode*)aNode;
+- (void)addIncoming:(JWConstraintGraphNode*)aNode;
 - (NSArray*)constraints;
-- (NSArray*)dependancies;
+- (NSArray*)outgoing;
+- (NSArray*)incoming;
+@property (nonatomic, assign) BOOL visited;
 
 @end
 

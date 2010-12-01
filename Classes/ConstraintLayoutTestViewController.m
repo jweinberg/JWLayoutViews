@@ -47,13 +47,10 @@
 #define UNIFORM_RAND() ((float)rand()/RAND_MAX)
 - (void)sizeAnimate:(UIView*)sender;
 {
-    //[UIView beginAnimations:nil context:nil];
     CGRect r = sender.frame;
     r.size = CGSizeMake(UNIFORM_RAND() * 25.0f + 25.0f, UNIFORM_RAND() * 25.0f + 25.0f);
     sender.frame = r;
-    //    [UIView commitAnimations];
 }
-
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad 
@@ -76,7 +73,8 @@
     [layoutView addConstraint:[JWConstraint constraintWithView:center
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:nil
-                                                     attribute:kJWConstraintMidX]];
+                                                     attribute:kJWConstraintMinX
+                                                        offset:50]];
     
     
     UIView *bottom = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];

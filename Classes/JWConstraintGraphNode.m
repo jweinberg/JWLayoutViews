@@ -26,7 +26,7 @@
 
 
 @implementation JWConstraintGraphNode
-
+@synthesize visited;
 + (id)nodeWithConstraints:(NSArray*)theConstraints;
 {
     return [[[JWConstraintGraphNode alloc] initWithConstraints:theConstraints] autorelease];
@@ -37,7 +37,8 @@
     if ((self = [super init]))
     {
         constraints = [theConstraints copy];
-        dependancies = [[NSMutableArray alloc] init];
+        outgoingEdges = [[NSMutableArray alloc] init];
+        incomingEdges = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -45,25 +46,31 @@
 - (void)dealloc;
 {
     [constraints release], constraints = nil;
-    [dependancies release], dependancies = nil;
+    [incomingEdges release], incomingEdges = nil;
+    [outgoingEdges release], outgoingEdges = nil;
     [super dealloc];
 }
 
-- (void)addDependancy:(JWConstraintGraphNode*)aNode;
+- (void)addIncoming:(JWConstraintGraphNode*)aNode;
 {
-    if (![dependancies containsObject:aNode])
-        [dependancies addObject:aNode];
+    if (![incomingEdges containsObject:aNode])
+        [incomingEdges addObject:aNode];
 }
 
-- (void)removeDependancy:(JWConstraintGraphNode*)aNode;
+- (void)addOutgoing:(JWConstraintGraphNode*)aNode;
 {
-    if ([dependancies containsObject:aNode])
-        [dependancies removeObject:aNode];
+    if (![outgoingEdges containsObject:aNode])
+        [outgoingEdges addObject:aNode];
 }
 
-- (NSArray*)dependancies;
+- (NSArray*)outgoing;
 {
-    return dependancies;
+    return outgoingEdges;
+}
+
+- (NSArray*)incoming;
+{
+    return incomingEdges;
 }
 
 - (NSArray*)constraints;
@@ -75,7 +82,7 @@
 
 - (NSString*)description;
 {
-    return [NSString stringWithFormat:@"constraints: %@ dependancies:%d",constraints, [dependancies count]];
+    return [NSString stringWithFormat:@"constraints: %@", constraints];// incoming:%@ outgoing:%@",constraints, incomingEdges, outgoingEdges];
 }
 
 @end
