@@ -24,15 +24,6 @@
 
 #import "JWConstraint.h"
 
-@interface JWConstraint ()
-@property (nonatomic, retain) UIView *view;
-@property (nonatomic, retain) UIView *relativeView;
-@property (nonatomic, assign) JWConstraintAttribute attribute;
-@property (nonatomic, assign) JWConstraintAttribute relativeAttribute;
-@property (nonatomic, assign) CGFloat scale;
-@property (nonatomic, assign) CGFloat offset;
-@end
-
 @implementation JWConstraint
 
 @synthesize view, relativeView, attribute, relativeAttribute, scale, offset;

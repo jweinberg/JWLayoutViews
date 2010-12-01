@@ -56,7 +56,6 @@
 {
     [constraints release], constraints = nil;
     [nodes release], nodes = nil;
-    [sortedNodes release], sortedNodes = nil;
     [super dealloc];
 }
 
@@ -93,20 +92,14 @@
 {
     constraints = [[NSMutableArray alloc] init];
     nodes = [[NSMutableArray alloc] init];
-    sortedNodes = [[NSMutableArray alloc] init];
 }
 
-#define ATTRIBUTE_TO_AXIS(A) ({__typeof(A) __A = A; __A == kJWConstraintMinX || \
-__A == kJWConstraintMidX || \
-__A == kJWConstraintMaxX || \
-__A == kJWConstraintWidth ? 0 : 1;})
-
-NSInteger compare_deps(id arg1, id arg2, void *arg3)
+int attribute_to_axis(JWConstraintAttribute attribute)
 {
-    JWConstraintGraphNode *n1 = arg1;
-    JWConstraintGraphNode *n2 = arg2;
-    
-    return [[n1 incoming] count] - [[n2 incoming] count];
+    return ((attribute == kJWConstraintMinX) ||
+            (attribute == kJWConstraintMidX) || 
+            (attribute == kJWConstraintMaxX) || 
+            (attribute == kJWConstraintWidth)) ? 0 : 1;
 }
 
 - (void)updateConstraintsGraph;
@@ -123,7 +116,7 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
             viewConstraintsAxis = [NSArray arrayWithObjects:[NSMutableArray array], [NSMutableArray array], nil];
             CFDictionarySetValue(viewConstraintsDict, [constraint view], viewConstraintsAxis);
         }
-        [[viewConstraintsAxis objectAtIndex:ATTRIBUTE_TO_AXIS([constraint attribute])] addObject:constraint];
+        [[viewConstraintsAxis objectAtIndex:attribute_to_axis([constraint attribute])] addObject:constraint];
     }
     
     [nodes removeAllObjects];
@@ -135,8 +128,8 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
             [nodes addObject:[JWConstraintGraphNode nodeWithConstraints:[axii objectAtIndex:1]]];
     }
     
-    
     CFRelease(viewConstraintsDict);
+    
     //Attach nodes (better way than n^2?)
     //For each node
     for (JWConstraintGraphNode *node in nodes)
@@ -153,7 +146,7 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
                 for (JWConstraint *constraint2 in [otherNode constraints])
                 {
                     if ([constraint relativeView] == [constraint2 view] && 
-                        ATTRIBUTE_TO_AXIS([constraint relativeAttribute]) == ATTRIBUTE_TO_AXIS([constraint2 attribute]))
+                        attribute_to_axis([constraint relativeAttribute]) == attribute_to_axis([constraint2 attribute]))
                     {
                         [node addOutgoing:otherNode];
                         [otherNode addIncoming:node];
@@ -164,43 +157,50 @@ NSInteger compare_deps(id arg1, id arg2, void *arg3)
         }
     }
     
-    //Sort based on the number of dependancies in the nodes
-    [nodes sortUsingFunction:compare_deps context:NULL];
-    
     //Do a topological sort
     NSMutableArray *queue = [NSMutableArray array];
     for (JWConstraintGraphNode *n in nodes)
     {
         if ([[n incoming] count] == 0)
             [queue addObject:n];
-        else
-            break;
     }
     
-    [sortedNodes removeAllObjects];
-    __block void (^visit)(JWConstraintGraphNode *n) = nil;
-    visit = ^(JWConstraintGraphNode *n)
+    NSMutableArray *allNodes = [NSArray arrayWithArray:nodes];
+    [nodes removeAllObjects];
+    
+    while ([queue count])
     {
-      if (!n.visited)
-      {
-          n.visited = YES;
-          for (JWConstraintGraphNode *m in [n outgoing])
-              visit(m);
-          [sortedNodes addObject:n];
-      }
-    };
+        JWConstraintGraphNode *node = [queue objectAtIndex:0];
+        [queue removeObjectAtIndex:0];
+        [nodes insertObject:node atIndex:0];
+        
+        for (JWConstraintGraphNode *outgoing in [node outgoing])
+        {
+            [node removeOutgoing:outgoing];
+            [outgoing removeIncoming:node];
+            if ([[outgoing incoming] count] == 0)
+            {
+                [queue addObject:outgoing];
+            }
+        }
+    }
     
-    for (JWConstraintGraphNode *n in queue)
-        visit(n);
+    for (JWConstraintGraphNode *node in allNodes)
+    {
+        if ([[node outgoing] count] || [[node incoming] count])
+            [[NSException exceptionWithName:@"JWInvalidConstraint"
+                                           reason:@"There is a cycle in the specified constraints"
+                                         userInfo:nil] raise];
+    }
     
-    NSLog(@"%@", sortedNodes);
+    //NSLog(@"%@", nodes);
     
     needsConstraintsUpdate = NO;
 }
 
 - (void)solveConstraints;
 {   
-    for (JWConstraintGraphNode *node in sortedNodes)
+    for (JWConstraintGraphNode *node in nodes)
         [self solveAxis:[node constraints]];
 }
 

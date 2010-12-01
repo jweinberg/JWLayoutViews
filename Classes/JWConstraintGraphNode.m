@@ -24,9 +24,8 @@
 
 #import "JWConstraintGraphNode.h"
 
-
 @implementation JWConstraintGraphNode
-@synthesize visited;
+
 + (id)nodeWithConstraints:(NSArray*)theConstraints;
 {
     return [[[JWConstraintGraphNode alloc] initWithConstraints:theConstraints] autorelease];
@@ -63,6 +62,18 @@
         [outgoingEdges addObject:aNode];
 }
 
+- (void)removeOutgoing:(JWConstraintGraphNode*)aNode;
+{
+    if ([outgoingEdges containsObject:aNode])
+        [outgoingEdges removeObject:aNode];
+}
+
+- (void)removeIncoming:(JWConstraintGraphNode*)aNode;
+{
+    if ([incomingEdges containsObject:aNode])
+        [incomingEdges removeObject:aNode];
+}
+
 - (NSArray*)outgoing;
 {
     return outgoingEdges;
@@ -82,7 +93,7 @@
 
 - (NSString*)description;
 {
-    return [NSString stringWithFormat:@"constraints: %@", constraints];// incoming:%@ outgoing:%@",constraints, incomingEdges, outgoingEdges];
+    return [NSString stringWithFormat:@"constraints: %@", constraints];
 }
 
 @end

@@ -64,6 +64,9 @@
     
     [layoutView addSubview:center];
     
+    UIView *bottom = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    bottom.backgroundColor = [UIColor redColor];
+    bottom.layer.borderWidth = 2.0;
     [layoutView addConstraint:[JWConstraint 
                                constraintWithView:center
                                attribute:kJWConstraintMidY
@@ -75,11 +78,14 @@
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMinX
                                                         offset:50]];
+
     
-    
-    UIView *bottom = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-    bottom.backgroundColor = [UIColor redColor];
-    bottom.layer.borderWidth = 2.0;
+    [layoutView addConstraint:[JWConstraint constraintWithView:center
+                                                     attribute:kJWConstraintMidX
+                                                    relativeTo:bottom
+                                                     attribute:kJWConstraintMinX
+                                                        offset:50]];
+ 
     
     [layoutView addSubview:bottom];
     
