@@ -346,7 +346,7 @@ CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL is
             min = max - size;
             break;
         default:
-            NSLog(@"What did you dooooooooo!!");
+            NSAssert(NO, @"Invalid axis, constraint building failed");
             break;
     }
 
