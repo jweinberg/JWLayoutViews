@@ -23,11 +23,13 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "ConstraintLayoutTestViewController.h"
-#import "JWConstraintLayoutView.h"
+#import "JWConstraintLayoutManager.h"
+#import "JWWrapLayoutManager.h"
+#import "UIView+LayoutManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ConstraintLayoutTestViewController
-@synthesize layoutView;
+@synthesize contentView;
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
  - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -61,16 +63,17 @@
     center.frame = CGRectMake(0.0,0.0,25.0,25.0);
     center.layer.borderWidth = 2.0;
     
+    JWConstraintLayoutManager *layoutManager = [[[JWConstraintLayoutManager alloc] init] autorelease];
     
-    [layoutView addSubview:center];
+    [self.contentView addSubview:center];
     
-    [layoutView addConstraint:[JWConstraint 
+    [layoutManager addConstraint:[JWConstraint 
                                constraintWithView:center
                                attribute:kJWConstraintMidY
                                relativeTo:nil
                                attribute:kJWConstraintMidY]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:center
+    [layoutManager addConstraint:[JWConstraint constraintWithView:center
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMinX
@@ -81,27 +84,27 @@
     bottom.backgroundColor = [UIColor redColor];
     bottom.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:bottom];
+    [self.contentView addSubview:bottom];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:bottom
+    [layoutManager addConstraint:[JWConstraint constraintWithView:bottom
                                                       attribute:kJWConstraintWidth
                                                      relativeTo:center
                                                       attribute:kJWConstraintWidth]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:bottom
+    [layoutManager addConstraint:[JWConstraint constraintWithView:bottom
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:center
                                                      attribute:kJWConstraintMidX]];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:bottom
+    [layoutManager addConstraint:[JWConstraint constraintWithView:bottom
                                                      attribute:kJWConstraintMinY
                                                     relativeTo:center
                                                      attribute:kJWConstraintMaxY
                                                         offset:10.0]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:bottom
+    [layoutManager addConstraint:[JWConstraint constraintWithView:bottom
                                                      attribute:kJWConstraintMaxY
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMaxY
@@ -112,27 +115,27 @@
     top.backgroundColor = [UIColor orangeColor];
     top.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:top];
+    [self.contentView addSubview:top];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:top
+    [layoutManager addConstraint:[JWConstraint constraintWithView:top
                                                      attribute:kJWConstraintWidth
                                                     relativeTo:center
                                                      attribute:kJWConstraintWidth]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:top
+    [layoutManager addConstraint:[JWConstraint constraintWithView:top
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:center
                                                      attribute:kJWConstraintMidX]];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:top
+    [layoutManager addConstraint:[JWConstraint constraintWithView:top
                                                      attribute:kJWConstraintMaxY
                                                     relativeTo:center
                                                      attribute:kJWConstraintMinY
                                                         offset:-10.0]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:top
+    [layoutManager addConstraint:[JWConstraint constraintWithView:top
                                                      attribute:kJWConstraintMinY
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMinY
@@ -143,27 +146,27 @@
     right.backgroundColor = [UIColor blueColor];
     right.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:right];
+    [self.contentView addSubview:right];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:right
+    [layoutManager addConstraint:[JWConstraint constraintWithView:right
                                                      attribute:kJWConstraintHeight
                                                     relativeTo:center
                                                      attribute:kJWConstraintHeight
                                                          scale:3.0
                                                         offset:0]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:right
+    [layoutManager addConstraint:[JWConstraint constraintWithView:right
                                                      attribute:kJWConstraintMidY
                                                     relativeTo:center
                                                      attribute:kJWConstraintMidY]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:right
+    [layoutManager addConstraint:[JWConstraint constraintWithView:right
                                                      attribute:kJWConstraintMinX
                                                     relativeTo:center
                                                     attribute:kJWConstraintMaxX
                                                         offset:10]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:right
+    [layoutManager addConstraint:[JWConstraint constraintWithView:right
                                                      attribute:kJWConstraintMaxX
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMaxX
@@ -174,27 +177,27 @@
     topRight.backgroundColor = [UIColor purpleColor];
     topRight.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:topRight];
+    [self.contentView addSubview:topRight];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topRight
                                                      attribute:kJWConstraintWidth
                                                     relativeTo:right
                                                      attribute:kJWConstraintWidth]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topRight
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:right
                                                      attribute:kJWConstraintMidX]];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topRight
                                                      attribute:kJWConstraintMinY
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMinY
                                                         offset:10]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topRight
                                                      attribute:kJWConstraintMaxY
                                                     relativeTo:right
                                                      attribute:kJWConstraintMinY
@@ -204,27 +207,27 @@
     left.backgroundColor = [UIColor greenColor];
     left.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:left];
+    [self.contentView addSubview:left];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:left
+    [layoutManager addConstraint:[JWConstraint constraintWithView:left
                                                      attribute:kJWConstraintHeight
                                                     relativeTo:center
                                                      attribute:kJWConstraintHeight
                                                          scale:6.0
                                                         offset:0]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:left
+    [layoutManager addConstraint:[JWConstraint constraintWithView:left
                                                      attribute:kJWConstraintMidY
                                                     relativeTo:center
                                                      attribute:kJWConstraintMidY]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:left
+    [layoutManager addConstraint:[JWConstraint constraintWithView:left
                                                      attribute:kJWConstraintMaxX
                                                     relativeTo:center
                                                      attribute:kJWConstraintMinX
                                                         offset:-10]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:left
+    [layoutManager addConstraint:[JWConstraint constraintWithView:left
                                                      attribute:kJWConstraintMinX
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMinX
@@ -234,27 +237,27 @@
     topLeft.backgroundColor = [UIColor yellowColor];
     topLeft.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:topLeft];
+    [self.contentView addSubview:topLeft];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topLeft
                                                      attribute:kJWConstraintWidth
                                                     relativeTo:left
                                                      attribute:kJWConstraintWidth]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topLeft
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:left
                                                      attribute:kJWConstraintMidX]];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topLeft
                                                      attribute:kJWConstraintMaxY
                                                     relativeTo:left
                                                      attribute:kJWConstraintMinY
                                                         offset:-10]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:topLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:topLeft
                                                      attribute:kJWConstraintMinY
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMinY
@@ -264,27 +267,27 @@
     botLeft.backgroundColor = [UIColor orangeColor];
     botLeft.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:botLeft];
+    [self.contentView addSubview:botLeft];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botLeft
                                                      attribute:kJWConstraintWidth
                                                     relativeTo:left
                                                      attribute:kJWConstraintWidth]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botLeft
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:left
                                                      attribute:kJWConstraintMidX]];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botLeft
                                                      attribute:kJWConstraintMaxY
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMaxY
                                                         offset:-10]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botLeft
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botLeft
                                                      attribute:kJWConstraintMinY
                                                     relativeTo:left
                                                      attribute:kJWConstraintMaxY
@@ -294,33 +297,49 @@
     botRight.backgroundColor = [UIColor magentaColor];
     botRight.layer.borderWidth = 2.0;
     
-    [layoutView addSubview:botRight];
+    [self.contentView addSubview:botRight];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botRight
                                                      attribute:kJWConstraintWidth
                                                     relativeTo:right
                                                      attribute:kJWConstraintWidth]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botRight
                                                      attribute:kJWConstraintMidX
                                                     relativeTo:right
                                                      attribute:kJWConstraintMidX]];
     
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botRight
                                                      attribute:kJWConstraintMaxY
                                                     relativeTo:nil
                                                      attribute:kJWConstraintMaxY
                                                         offset:-10]];
     
-    [layoutView addConstraint:[JWConstraint constraintWithView:botRight
+    [layoutManager addConstraint:[JWConstraint constraintWithView:botRight
                                                      attribute:kJWConstraintMinY
                                                     relativeTo:right
                                                      attribute:kJWConstraintMaxY
                                                         offset:10]];
     
     
+    
+    
+//    JWWrapLayoutManager *wrappingLayout = [[[JWWrapLayoutManager alloc] init] autorelease];
+//    
+//    
+//    for (int i = 0; i < 100; ++i)
+//    {
+//        UIButton * tmp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        [tmp addTarget:self action:@selector(sizeAnimate:) forControlEvents:UIControlEventTouchUpInside];
+//        [tmp setFrame:CGRectMake(0, 0, 50, 50)];
+//        tmp.backgroundColor = [UIColor colorWithRed:UNIFORM_RAND() green:UNIFORM_RAND() blue:UNIFORM_RAND() alpha:1.0];
+//        [self.contentView addSubview:tmp];
+//
+//    }
+
+    [[self contentView] jw_setLayoutManager:layoutManager];
 }
 
 
@@ -355,7 +374,7 @@
 
 
 - (void)dealloc {
-    [layoutView release], layoutView = nil;
+    [contentView release], contentView = nil;
     [super dealloc];
 }
 

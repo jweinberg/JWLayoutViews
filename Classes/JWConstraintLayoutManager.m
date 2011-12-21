@@ -22,32 +22,28 @@
 //  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "JWConstraintLayoutView.h"
+#import "JWConstraintLayoutManager.h"
 #import "JWConstraintGraphNode.h"
 
-@interface JWConstraintLayoutView ()
-- (void)setupDefaults;
+@interface JWConstraintLayoutManager ()
+{
+    NSMutableArray *constraints;
+    NSMutableArray *nodes;
+    BOOL needsConstraintsUpdate;
+}
 - (void)updateConstraintsGraph;
 - (void)solveConstraints;
 - (void)solveAxis:(NSArray*)axis;
 @end
 
-@implementation JWConstraintLayoutView
+@implementation JWConstraintLayoutManager
 
-- (id)initWithFrame:(CGRect)frame 
+- (id)init;
 {
-    if ((self = [super initWithFrame:frame]))
+    if ((self = [super init]))
     {
-        [self setupDefaults];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder;
-{
-    if ((self = [super initWithCoder:aDecoder]))
-    {
-        [self setupDefaults];
+        constraints = [[NSMutableArray alloc] init];
+        nodes = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -59,9 +55,8 @@
     [super dealloc];
 }
 
-- (void)layoutSubviews;
+- (void)layoutSubviewsOfView:(UIView *)view;
 {
-    [super layoutSubviews];
     if (needsConstraintsUpdate)
         [self updateConstraintsGraph];
     [self solveConstraints];
@@ -76,23 +71,16 @@
 - (void)addConstraint:(JWConstraint*)constraint;
 {
     [constraints addObject:constraint];
-    [self setNeedsLayout];
     [self setNeedsConstraintsUpdate];
 }
 
 - (void)removeConstraint:(JWConstraint*)constraint;
 {
     [constraints removeObject:constraint];
-    [self setNeedsLayout];
     [self setNeedsConstraintsUpdate];
 }
 
 #pragma mark Private
-- (void)setupDefaults;
-{
-    constraints = [[NSMutableArray alloc] init];
-    nodes = [[NSMutableArray alloc] init];
-}
 
 int attribute_to_axis(JWConstraintAttribute attribute)
 {

@@ -23,22 +23,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <UIKit/UIKit.h>
-@class JWWrapLayoutView;
 
-@interface WrapLayoutTestViewController : UIViewController {
-
-    JWWrapLayoutView *layoutView;
-    UIEdgeInsets insets;
-}
-
-- (IBAction)addTestView:(id)sender;
-- (IBAction)horiz:(id)sender;
-- (IBAction)vert:(id)sender;
-- (IBAction)setLeft:(id)sender;
-- (IBAction)setTop:(id)sender;
-- (IBAction)setRight:(id)sender;
-- (IBAction)setBottom:(id)sender;
-
-@property (nonatomic, retain) IBOutlet JWWrapLayoutView *layoutView;
+@protocol JWLayoutManager <NSObject>
+- (void)layoutSubviewsOfView:(UIView*)view;
 @end
-

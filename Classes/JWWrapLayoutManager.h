@@ -23,6 +23,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <UIKit/UIKit.h>
+#import "JWLayoutManager.h"
 
 typedef enum
 {
@@ -38,7 +39,7 @@ typedef enum
     JWHorizontalRowAlignmentRight,
 }JWHorizontalRowAlignment;
 
-@interface JWWrapLayoutView : UIView 
+@interface JWWrapLayoutManager : NSObject <JWLayoutManager>
 {
     UIEdgeInsets subviewMargins;
     CGFloat minRowHeight;

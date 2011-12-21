@@ -23,6 +23,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <UIKit/UIKit.h>
+#import "JWLayoutManager.h"
 #import "JWConstraint.h"
 
 typedef enum {
@@ -32,13 +33,7 @@ typedef enum {
     kJWConstraintSize = 1 << 3,
 }JWConstraintAxisValues;
 
-@interface JWConstraintLayoutView : UIView 
-{
-    NSMutableSet *constraints;
-    NSMutableArray *nodes;
-    BOOL needsConstraintsUpdate;
-}
-
+@interface JWConstraintLayoutManager : NSObject <JWLayoutManager> 
 - (void)addConstraint:(JWConstraint*)constraint;
 - (void)removeConstraint:(JWConstraint*)constraint;
 

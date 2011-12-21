@@ -22,41 +22,26 @@
 //  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "JWWrapLayoutView.h"
+#import "JWWrapLayoutManager.h"
 
-@interface JWWrapLayoutView ()
+@interface JWWrapLayoutManager ()
 - (void)setupDefaults;
-- (void)alignRow:(CGRect*)rowStart length:(NSUInteger)rowLength height:(CGFloat)rowHeight;
+- (void)alignRow:(CGRect*)rowStart length:(NSUInteger)rowLength height:(CGFloat)rowHeight inFrame:(CGRect)frame;
 @end
 
-@implementation JWWrapLayoutView
+@implementation JWWrapLayoutManager
 @synthesize minRowHeight, verticalRowAlignment, horizontalRowAlignment, subviewMargins;
 
-
-- (id)initWithFrame:(CGRect)frame
+- (id)init;
 {
-    if ((self = [super initWithFrame:frame])) 
+    if ((self = [super init]))
     {
-        [self setupDefaults];
+        minRowHeight = CGFLOAT_MIN;
+        verticalRowAlignment = JWVerticalRowAlignmentCenter;
+        horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
+        subviewMargins = UIEdgeInsetsZero;
     }
     return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if ((self = [super initWithCoder:aDecoder]))
-    {
-        [self setupDefaults];
-    }
-    return self;
-}
-
-- (void)setupDefaults;
-{
-    minRowHeight = CGFLOAT_MIN;
-    verticalRowAlignment = JWVerticalRowAlignmentCenter;
-    horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
-    subviewMargins = UIEdgeInsetsZero;
 }
 
 - (void)dealloc
@@ -64,14 +49,13 @@
     [super dealloc];
 }
 
-
-- (void)layoutSubviews
+- (void)layoutSubviewsOfView:(UIView *)view;
 {
     CGPoint currentOffset = CGPointMake(0, subviewMargins.top);
     CGFloat rowHeight = minRowHeight;
     
     //Temp storage for all the frames
-    CGRect * frames = calloc([[self subviews] count], sizeof(CGRect));
+    CGRect * frames = calloc([[view subviews] count], sizeof(CGRect));
     
     NSUInteger idx = 0;
     //The row that is currently being processed
@@ -82,23 +66,24 @@
                                                   -subviewMargins.bottom,
                                                   -subviewMargins.right);
     
-    for (UIView *view in [self subviews])
+    for (UIView *subview in [view subviews])
     {
         currentOffset.x += subviewMargins.left;
         //Setup the frame storage
-        frames[idx] = view.frame;
+        frames[idx] = subview.frame;
         CGRect *newFrame = &frames[idx];
         
         newFrame->origin = currentOffset;
         
         //Need to check if the frame is inside the view
-        if (!CGRectContainsRect(self.bounds, UIEdgeInsetsInsetRect(*newFrame, flippedInsets)))
+        if (!CGRectContainsRect(view.frame, UIEdgeInsetsInsetRect(*newFrame, flippedInsets)))
         {
             //Because this view wasn't inside, we know that the row is ready
             //Go over the current row and center them vertically
             [self alignRow:&frames[rowRange.location] 
                     length:rowRange.length 
-                    height:rowHeight];
+                    height:rowHeight
+                   inFrame:view.frame];
             
             //Jump to the next row
             currentOffset.y += rowHeight + subviewMargins.top + subviewMargins.bottom;
@@ -126,12 +111,13 @@
     
     [self alignRow:&frames[rowRange.location] 
             length:rowRange.length 
-            height:rowHeight];
+            height:rowHeight
+           inFrame:view.frame];
     
     idx = 0;
-    for (UIView *view in [self subviews])
+    for (UIView *subview in [view subviews])
     {
-        [view setFrame:frames[idx++]];
+        [subview setFrame:frames[idx++]];
     }
     
     free(frames);
@@ -139,33 +125,9 @@
 
 #pragma mark Property Overrides
 
-- (void)setMinRowHeight:(CGFloat)aFloat;
-{
-    minRowHeight = aFloat;
-    [self setNeedsLayout];
-}
-
-- (void)setVerticalRowAlignment:(JWVerticalRowAlignment)anAlignment;
-{
-    verticalRowAlignment = anAlignment;
-    [self setNeedsLayout];
-}
-
-- (void)setHorizontalRowAlignment:(JWHorizontalRowAlignment)anAlignment;
-{
-    horizontalRowAlignment = anAlignment;
-    [self setNeedsLayout];
-}
-
-- (void)setSubviewMargins:(UIEdgeInsets)theInsets;
-{
-    subviewMargins = theInsets;
-    [self setNeedsLayout];
-}
-
 #pragma mark Private
 
-- (void)alignRow:(CGRect*)rowStart length:(NSUInteger)rowLength height:(CGFloat)rowHeight;
+- (void)alignRow:(CGRect*)rowStart length:(NSUInteger)rowLength height:(CGFloat)rowHeight inFrame:(CGRect)frame;
 {
     CGFloat rowWidth = 0;
     
@@ -181,6 +143,8 @@
             case JWVerticalRowAlignmentBottom:
                 rFrame->origin.y += (rowHeight - rFrame->size.height);
                 break;
+            default:
+                break;
         }
         rowWidth += rFrame->size.width + subviewMargins.left + subviewMargins.right;
     }
@@ -189,10 +153,12 @@
     switch (horizontalRowAlignment)
     {
         case JWHorizontalRowAlignmentCenter:
-            currentX = (self.bounds.size.width - rowWidth) / 2.0;
+            currentX = (frame.size.width - rowWidth) / 2.0;
             break;
         case JWHorizontalRowAlignmentRight:
-            currentX = self.bounds.size.width - rowWidth;
+            currentX = frame.size.width - rowWidth;
+            break;
+        default:
             break;
     }
     
