@@ -24,7 +24,14 @@
 
 #import "JWConstraintGraphNode.h"
 
+@interface JWConstraintGraphNode ()
+@property (nonatomic, copy) NSArray *constraints;
+@property (nonatomic, retain) NSMutableArray *outgoingEdges;
+@property (nonatomic, retain) NSMutableArray *incomingEdges;
+@end
+
 @implementation JWConstraintGraphNode
+@synthesize constraints, incomingEdges, outgoingEdges;
 
 + (id)nodeWithConstraints:(NSArray*)theConstraints;
 {
@@ -35,65 +42,50 @@
 {
     if ((self = [super init]))
     {
-        constraints = [theConstraints copy];
-        outgoingEdges = [[NSMutableArray alloc] init];
-        incomingEdges = [[NSMutableArray alloc] init];
+        self.constraints = theConstraints;
+        self.outgoingEdges = [NSMutableArray array];
+        self.incomingEdges = [NSMutableArray array];
     }
     return self;
 }
 
 - (void)dealloc;
 {
-    [constraints release], constraints = nil;
-    [incomingEdges release], incomingEdges = nil;
-    [outgoingEdges release], outgoingEdges = nil;
+    self.constraints = nil;
+    self.outgoingEdges = nil;
+    self.incomingEdges = nil;
     [super dealloc];
 }
 
 - (void)addIncoming:(JWConstraintGraphNode*)aNode;
 {
-    if (![incomingEdges containsObject:aNode])
-        [incomingEdges addObject:aNode];
+    if (![self.incomingEdges containsObject:aNode])
+        [self.incomingEdges addObject:aNode];
 }
 
 - (void)addOutgoing:(JWConstraintGraphNode*)aNode;
 {
-    if (![outgoingEdges containsObject:aNode])
-        [outgoingEdges addObject:aNode];
+    if (![self.outgoingEdges containsObject:aNode])
+        [self.outgoingEdges addObject:aNode];
 }
 
 - (void)removeOutgoing:(JWConstraintGraphNode*)aNode;
 {
-    if ([outgoingEdges containsObject:aNode])
-        [outgoingEdges removeObject:aNode];
+    if ([self.outgoingEdges containsObject:aNode])
+        [self.outgoingEdges removeObject:aNode];
 }
 
 - (void)removeIncoming:(JWConstraintGraphNode*)aNode;
 {
-    if ([incomingEdges containsObject:aNode])
-        [incomingEdges removeObject:aNode];
-}
-
-- (NSArray*)outgoing;
-{
-    return outgoingEdges;
-}
-
-- (NSArray*)incoming;
-{
-    return incomingEdges;
-}
-
-- (NSArray*)constraints;
-{
-    return constraints;
+    if ([self.incomingEdges containsObject:aNode])
+        [self.incomingEdges removeObject:aNode];
 }
 
 #pragma mark Debugging
 
 - (NSString*)description;
 {
-    return [NSString stringWithFormat:@"constraints: %@", constraints];
+    return [NSString stringWithFormat:@"constraints: %@", self.constraints];
 }
 
 @end

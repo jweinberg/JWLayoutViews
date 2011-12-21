@@ -24,6 +24,15 @@
 
 #import "JWConstraint.h"
 
+@interface JWConstraint ()
+@property (nonatomic, retain) UIView *view;
+@property (nonatomic, retain) UIView *relativeView;
+@property (nonatomic, assign) JWConstraintAttribute attribute;
+@property (nonatomic, assign) JWConstraintAttribute relativeAttribute;
+@property (nonatomic, assign) CGFloat scale;
+@property (nonatomic, assign) CGFloat offset;
+@end
+
 @implementation JWConstraint
 
 @synthesize view, relativeView, attribute, relativeAttribute, scale, offset;
@@ -80,35 +89,35 @@
 {
     if ((self = [self init]))
     {
-        view = [aView retain];
-        relativeView = [aRelativeView retain];
+        self.view = aView;
+        self.relativeView = aRelativeView;
         
-        attribute = anAttribute;
-        relativeAttribute = aRelativeAttribute;
+        self.attribute = anAttribute;
+        self.relativeAttribute = aRelativeAttribute;
         
-        scale = aScale;
-        offset = aOffset;
+        self.scale = aScale;
+        self.offset = aOffset;
     }
     return self;
 }
 
 - (void)dealloc;
 {
-    [view release], view = nil;
-    [relativeView release], relativeView = nil;
+    self.view = nil;
+    self.relativeView = nil;
     [super dealloc];
 }
 
 - (CGFloat)relativeValue;
 {
     CGRect frame = CGRectZero;
-    if (relativeView)
-        frame = [relativeView frame];
+    if (self.relativeView)
+        frame = [self.relativeView frame];
     else
-        frame = [[view superview] frame];
+        frame = [[self.view superview] frame];
     
     CGFloat rVal = 0.0f;
-    switch (relativeAttribute)
+    switch (self.relativeAttribute)
     {
         case kJWConstraintMinX:
             rVal = CGRectGetMinX(frame);
@@ -135,7 +144,7 @@
             rVal = CGRectGetHeight(frame);
             break;
     }
-    return (rVal * scale) + offset;
+    return (rVal * self.scale) + self.offset;
 }
 
 #pragma mark Debugging
@@ -165,7 +174,7 @@
 
 - (NSString*)description;
 {
-    return [NSString stringWithFormat:@"%p (%@) depends on %p (%@)", view, [self attributeToString:attribute], relativeView, [self attributeToString:relativeAttribute]];
+    return [NSString stringWithFormat:@"%p (%@) depends on %p (%@)", self.view, [self attributeToString:self.attribute], self.relativeView, [self attributeToString:self.relativeAttribute]];
 }
 
 @end

@@ -25,7 +25,6 @@
 #import "JWWrapLayoutManager.h"
 
 @interface JWWrapLayoutManager ()
-- (void)setupDefaults;
 - (void)alignRow:(CGRect*)rowStart length:(NSUInteger)rowLength height:(CGFloat)rowHeight inFrame:(CGRect)frame;
 @end
 
@@ -36,23 +35,18 @@
 {
     if ((self = [super init]))
     {
-        minRowHeight = CGFLOAT_MIN;
-        verticalRowAlignment = JWVerticalRowAlignmentCenter;
-        horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
-        subviewMargins = UIEdgeInsetsZero;
+        self.minRowHeight = CGFLOAT_MIN;
+        self.verticalRowAlignment = JWVerticalRowAlignmentCenter;
+        self.horizontalRowAlignment = JWHorizontalRowAlignmentCenter;
+        self.subviewMargins = UIEdgeInsetsZero;
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
-
 - (void)layoutSubviewsOfView:(UIView *)view;
 {
-    CGPoint currentOffset = CGPointMake(0, subviewMargins.top);
-    CGFloat rowHeight = minRowHeight;
+    CGPoint currentOffset = CGPointMake(0, self.subviewMargins.top);
+    CGFloat rowHeight = self.minRowHeight;
     
     //Temp storage for all the frames
     CGRect * frames = calloc([[view subviews] count], sizeof(CGRect));
@@ -61,14 +55,14 @@
     //The row that is currently being processed
     NSRange rowRange = NSMakeRange(0,0);
     
-    UIEdgeInsets flippedInsets = UIEdgeInsetsMake(-subviewMargins.top, 
-                                                  -subviewMargins.left, 
-                                                  -subviewMargins.bottom,
-                                                  -subviewMargins.right);
+    UIEdgeInsets flippedInsets = UIEdgeInsetsMake(-self.subviewMargins.top, 
+                                                  -self.subviewMargins.left, 
+                                                  -self.subviewMargins.bottom,
+                                                  -self.subviewMargins.right);
     
     for (UIView *subview in [view subviews])
     {
-        currentOffset.x += subviewMargins.left;
+        currentOffset.x += self.subviewMargins.left;
         //Setup the frame storage
         frames[idx] = subview.frame;
         CGRect *newFrame = &frames[idx];
@@ -86,12 +80,12 @@
                    inFrame:view.frame];
             
             //Jump to the next row
-            currentOffset.y += rowHeight + subviewMargins.top + subviewMargins.bottom;
-            currentOffset.x = subviewMargins.left;
+            currentOffset.y += rowHeight + self.subviewMargins.top + self.subviewMargins.bottom;
+            currentOffset.x = self.subviewMargins.left;
             
             newFrame->origin = currentOffset;
             
-            rowHeight = MAX(minRowHeight, newFrame->size.height);
+            rowHeight = MAX(self.minRowHeight, newFrame->size.height);
             rowRange.location = idx;
             rowRange.length = 0;
         }
@@ -101,10 +95,10 @@
         
         //Adjust the row height if needed
         if (newFrame->size.height > rowHeight)
-            rowHeight = MAX(minRowHeight, newFrame->size.height);
+            rowHeight = MAX(self.minRowHeight, newFrame->size.height);
         
         //Shift the cursor to the next location
-        currentOffset.x += newFrame->size.width + subviewMargins.right;
+        currentOffset.x += newFrame->size.width + self.subviewMargins.right;
         
         idx++;
     }
@@ -135,7 +129,7 @@
     for (int i = 0; i < rowLength; ++i)
     {
         CGRect * rFrame = &rowStart[i];
-        switch (verticalRowAlignment)
+        switch (self.verticalRowAlignment)
         {
             case JWVerticalRowAlignmentCenter:
                 rFrame->origin.y += (rowHeight - rFrame->size.height) / 2.0;
@@ -146,11 +140,11 @@
             default:
                 break;
         }
-        rowWidth += rFrame->size.width + subviewMargins.left + subviewMargins.right;
+        rowWidth += rFrame->size.width + self.subviewMargins.left + self.subviewMargins.right;
     }
     
     CGFloat currentX = 0;
-    switch (horizontalRowAlignment)
+    switch (self.horizontalRowAlignment)
     {
         case JWHorizontalRowAlignmentCenter:
             currentX = (frame.size.width - rowWidth) / 2.0;
@@ -165,10 +159,10 @@
     
     for (int i = 0; i < rowLength; ++i)
     {
-        currentX += subviewMargins.left;
+        currentX += self.subviewMargins.left;
         CGRect * rFrame = &rowStart[i];
         rFrame->origin.x = currentX;
-        currentX += rFrame->size.width + subviewMargins.right;
+        currentX += rFrame->size.width + self.subviewMargins.right;
     }
         
 }

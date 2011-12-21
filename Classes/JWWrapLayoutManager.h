@@ -40,13 +40,6 @@ typedef enum
 }JWHorizontalRowAlignment;
 
 @interface JWWrapLayoutManager : NSObject <JWLayoutManager>
-{
-    UIEdgeInsets subviewMargins;
-    CGFloat minRowHeight;
-    JWVerticalRowAlignment verticalRowAlignment;
-    JWHorizontalRowAlignment horizontalRowAlignment;
-}
-
 @property (nonatomic, assign) CGFloat minRowHeight;
 @property (nonatomic, assign) UIEdgeInsets subviewMargins;
 @property (nonatomic, assign) JWVerticalRowAlignment verticalRowAlignment;

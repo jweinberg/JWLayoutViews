@@ -25,11 +25,6 @@
 #import <Foundation/Foundation.h>
 
 @interface JWConstraintGraphNode : NSObject
-{
-    NSArray *constraints;
-    NSMutableArray *outgoingEdges;
-    NSMutableArray *incomingEdges;
-}
 
 + (id)nodeWithConstraints:(NSArray*)aConstraint;
 - (id)initWithConstraints:(NSArray*)aConstraint;
@@ -38,8 +33,8 @@
 - (void)removeOutgoing:(JWConstraintGraphNode*)aNode;
 - (void)removeIncoming:(JWConstraintGraphNode*)aNode;
 - (NSArray*)constraints;
-- (NSArray*)outgoing;
-- (NSArray*)incoming;
+- (NSArray*)outgoingEdges;
+- (NSArray*)incomingEdges;
 
 @end
 

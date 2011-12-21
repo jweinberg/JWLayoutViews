@@ -36,14 +36,6 @@ typedef enum {
 }JWConstraintAttribute;
 
 @interface JWConstraint : NSObject
-{
-    UIView *view;
-    JWConstraintAttribute attribute;
-    UIView *relativeView;
-    JWConstraintAttribute relativeAttribute;
-    CGFloat scale;
-    CGFloat offset;
-}
 
 + (id)constraintWithView:(UIView*)aView
                attribute:(JWConstraintAttribute)anAttribute 
