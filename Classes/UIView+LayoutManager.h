@@ -26,6 +26,9 @@
 #import "JWLayoutManager.h"
 
 @interface UIView (JWLayoutManager)
+- (void)jw_setName:(NSString*)aName;
+- (NSString*)jw_name;
 - (id<JWLayoutManager>)jw_layoutManager;
 - (void)jw_setLayoutManager:(id<JWLayoutManager>)aLayoutManager;
+- (UIView*)jw_subviewWithName:(NSString*)name;
 @end

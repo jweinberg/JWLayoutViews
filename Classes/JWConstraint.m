@@ -23,10 +23,11 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "JWConstraint.h"
+#import "UIView+LayoutManager.h"
 
 @interface JWConstraint ()
-@property (nonatomic, retain) UIView *view;
-@property (nonatomic, retain) UIView *relativeView;
+@property (nonatomic, copy) NSString *view;
+@property (nonatomic, copy) NSString *relativeView;
 @property (nonatomic, assign) JWConstraintAttribute attribute;
 @property (nonatomic, assign) JWConstraintAttribute relativeAttribute;
 @property (nonatomic, assign) CGFloat scale;
@@ -37,9 +38,9 @@
 
 @synthesize view, relativeView, attribute, relativeAttribute, scale, offset;
 
-+ (id)constraintWithView:(UIView*)aView
++ (id)constraintWithView:(NSString*)aView
                attribute:(JWConstraintAttribute)anAttribute 
-              relativeTo:(UIView*)aRelativeView 
+              relativeTo:(NSString*)aRelativeView 
                attribute:(JWConstraintAttribute)aRelativeAttribute 
                    scale:(CGFloat)aScale 
                   offset:(CGFloat)aOffset
@@ -52,9 +53,9 @@
                                         offset:aOffset] autorelease];
 }
 
-+ (id)constraintWithView:(UIView*)aView
++ (id)constraintWithView:(NSString*)aView
                attribute:(JWConstraintAttribute)anAttribute 
-              relativeTo:(UIView*)aRelativeView 
+              relativeTo:(NSString*)aRelativeView 
                attribute:(JWConstraintAttribute)aRelativeAttribute;
 {
     return [[[JWConstraint alloc] initWithView:aView
@@ -66,9 +67,9 @@
     
 }
 
-+ (id)constraintWithView:(UIView*)aView
++ (id)constraintWithView:(NSString*)aView
                attribute:(JWConstraintAttribute)anAttribute 
-              relativeTo:(UIView*)aRelativeView 
+              relativeTo:(NSString*)aRelativeView 
                attribute:(JWConstraintAttribute)aRelativeAttribute 
                   offset:(CGFloat)aOffset;
 {
@@ -80,9 +81,9 @@
                                         offset:aOffset] autorelease];
 }
 
-- (id)initWithView:(UIView*)aView
+- (id)initWithView:(NSString*)aView
          attribute:(JWConstraintAttribute)anAttribute 
-        relativeTo:(UIView*)aRelativeView 
+        relativeTo:(NSString*)aRelativeView 
          attribute:(JWConstraintAttribute)aRelativeAttribute 
              scale:(CGFloat)aScale 
             offset:(CGFloat)aOffset
@@ -108,13 +109,13 @@
     [super dealloc];
 }
 
-- (CGFloat)relativeValue;
+- (CGFloat)relativeValueInView:(UIView*)superview;
 {
     CGRect frame = CGRectZero;
     if (self.relativeView)
-        frame = [self.relativeView frame];
+        frame = [[superview jw_subviewWithName:self.relativeView] frame];
     else
-        frame = [[self.view superview] frame];
+        frame = [superview frame];
     
     CGFloat rVal = 0.0f;
     switch (self.relativeAttribute)

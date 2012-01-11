@@ -37,35 +37,35 @@ typedef enum {
 
 @interface JWConstraint : NSObject
 
-+ (id)constraintWithView:(UIView*)aView
++ (id)constraintWithView:(NSString*)aView
                attribute:(JWConstraintAttribute)anAttribute 
-              relativeTo:(UIView*)aRelativeView 
+              relativeTo:(NSString*)aRelativeView 
                attribute:(JWConstraintAttribute)aRelativeAttribute 
                    scale:(CGFloat)aScale 
                   offset:(CGFloat)aOffset;
 
-+ (id)constraintWithView:(UIView*)aView
++ (id)constraintWithView:(NSString*)aView
                attribute:(JWConstraintAttribute)anAttribute 
-              relativeTo:(UIView*)aRelativeView 
+              relativeTo:(NSString*)aRelativeView 
                attribute:(JWConstraintAttribute)aRelativeAttribute 
                   offset:(CGFloat)aOffset;
 
-+ (id)constraintWithView:(UIView*)aView
++ (id)constraintWithView:(NSString*)aView
                attribute:(JWConstraintAttribute)anAttribute 
-              relativeTo:(UIView*)aRelativeView 
+              relativeTo:(NSString*)aRelativeView 
                attribute:(JWConstraintAttribute)aRelativeAttribute;
 
-- (id)initWithView:(UIView*)aView
+- (id)initWithView:(NSString*)aView
          attribute:(JWConstraintAttribute)anAttribute 
-        relativeTo:(UIView*)aRelativeView 
+        relativeTo:(NSString*)aRelativeView 
          attribute:(JWConstraintAttribute)aRelativeAttribute 
              scale:(CGFloat)aScale 
             offset:(CGFloat)aOffset;
 
-- (CGFloat)relativeValue;
+- (CGFloat)relativeValueInView:(UIView*)view;
 
-@property (nonatomic, readonly, retain) UIView *view;
-@property (nonatomic, readonly, retain) UIView *relativeView;
+@property (nonatomic, readonly, copy) NSString *view;
+@property (nonatomic, readonly, copy) NSString *relativeView;
 @property (nonatomic, readonly, assign) JWConstraintAttribute attribute;
 @property (nonatomic, readonly, assign) JWConstraintAttribute relativeAttribute;
 @property (nonatomic, readonly, assign) CGFloat scale;

@@ -24,14 +24,15 @@
 
 #import "JWConstraintLayoutManager.h"
 #import "JWConstraintGraphNode.h"
+#import "UIView+LayoutManager.h"
 
 @interface JWConstraintLayoutManager ()
 @property (nonatomic, retain) NSMutableArray *constraints;
 @property (nonatomic, retain) NSMutableArray *nodes;
 @property (nonatomic, assign) BOOL needsConstraintsUpdate;
 - (void)updateConstraintsGraph;
-- (void)solveConstraints;
-- (void)solveAxis:(NSArray*)axis;
+- (void)solveConstraintsInView:(UIView*)view;
+- (void)solveAxis:(NSArray*)axis inView:(UIView*)view;
 @end
 
 @implementation JWConstraintLayoutManager
@@ -57,7 +58,7 @@
 {
     if (self.needsConstraintsUpdate)
         [self updateConstraintsGraph];
-    [self solveConstraints];
+    [self solveConstraintsInView:view];
 }
 
 #pragma mark Constraint Managment
@@ -184,10 +185,10 @@ int attribute_to_axis(JWConstraintAttribute attribute)
     self.needsConstraintsUpdate = NO;
 }
 
-- (void)solveConstraints;
+- (void)solveConstraintsInView:(UIView *)view;
 {   
     for (JWConstraintGraphNode *node in self.nodes)
-        [self solveAxis:[node constraints]];
+        [self solveAxis:[node constraints] inView:view];
 }
 
 CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL isYAxis)
@@ -219,7 +220,7 @@ CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL is
     return val;
 }
 
-- (void)solveAxis:(NSArray*)axis;
+- (void)solveAxis:(NSArray*)axis inView:(UIView *)superview;
 {
     //There are 4 possible entries on each axis
     //Min, Mid, Max and Size
@@ -228,7 +229,7 @@ CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL is
     
     uint8_t combined = 0x00;
     
-    UIView *view = [[axis objectAtIndex:0] view];
+    UIView *view = [superview jw_subviewWithName:[(JWConstraint*)[axis objectAtIndex:0] view]];
     CGRect rect = [view frame];
     
     CGFloat minR = CGFLOAT_MAX;
@@ -240,7 +241,7 @@ CGFloat AxisAttributeValue(CGRect frame, JWConstraintAxisValues axisVal, BOOL is
     {
         combined |= [constraint attribute];
         
-        CGFloat rel = [constraint relativeValue];
+        CGFloat rel = [constraint relativeValueInView:superview];
         switch ([constraint attribute] >= 1 << 4 ? [constraint attribute] >> 4 : [constraint attribute])
         {
             case kJWConstraintMin:

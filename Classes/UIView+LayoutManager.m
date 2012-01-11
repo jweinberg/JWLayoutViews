@@ -26,6 +26,7 @@
 #import <objc/runtime.h>
 
 static const char * const kJWLayoutManagerKey = "com.jweinberg.layoutmanager";
+static const char * const kJWViewNameKey = "com.jweinberg.name";
 
 static void jw_layoutSubviews(UIView *self, SEL _cmd)
 {
@@ -36,6 +37,16 @@ static void jw_layoutSubviews(UIView *self, SEL _cmd)
 }
 
 @implementation UIView (JWLayoutManager)
+
+- (NSString *)jw_name;
+{
+    return objc_getAssociatedObject(self, kJWViewNameKey);
+}
+
+- (void)jw_setName:(NSString *)aName;
+{
+    objc_setAssociatedObject(self, kJWViewNameKey, aName, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
 
 - (id<JWLayoutManager>)jw_layoutManager;
 {    
@@ -61,6 +72,17 @@ static void jw_layoutSubviews(UIView *self, SEL _cmd)
     }
     objc_setAssociatedObject(self, kJWLayoutManagerKey, aLayoutManager, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self setNeedsLayout];
+}
+
+//Need to cache these?
+- (UIView *)jw_subviewWithName:(NSString *)name;
+{
+    for (UIView *subview in [self subviews])
+    {
+        if ([[subview jw_name] isEqualToString:name])
+            return subview;
+    }
+    return nil;
 }
 
 @end
