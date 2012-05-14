@@ -60,25 +60,25 @@
 - (void)addIncoming:(JWConstraintGraphNode*)aNode;
 {
     if (![self.incomingEdges containsObject:aNode])
-        [self.incomingEdges addObject:aNode];
+        [(NSMutableArray *)self.incomingEdges addObject:aNode];
 }
 
 - (void)addOutgoing:(JWConstraintGraphNode*)aNode;
 {
     if (![self.outgoingEdges containsObject:aNode])
-        [self.outgoingEdges addObject:aNode];
+        [(NSMutableArray *)self.outgoingEdges addObject:aNode];
 }
 
 - (void)removeOutgoing:(JWConstraintGraphNode*)aNode;
 {
     if ([self.outgoingEdges containsObject:aNode])
-        [self.outgoingEdges removeObject:aNode];
+        [(NSMutableArray *)self.outgoingEdges removeObject:aNode];
 }
 
 - (void)removeIncoming:(JWConstraintGraphNode*)aNode;
 {
     if ([self.incomingEdges containsObject:aNode])
-        [self.incomingEdges removeObject:aNode];
+        [(NSMutableArray *)self.incomingEdges removeObject:aNode];
 }
 
 #pragma mark Debugging
