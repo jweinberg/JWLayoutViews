@@ -115,7 +115,6 @@
     if (self.relativeView)
         frame = [[superview jw_subviewWithName:self.relativeView] frame];
     else
-    
         frame = [superview bounds];
     CGFloat rVal = 0.0f;
     switch (self.relativeAttribute)
