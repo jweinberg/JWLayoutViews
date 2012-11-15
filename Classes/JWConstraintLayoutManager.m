@@ -161,15 +161,19 @@ int attribute_to_axis(JWConstraintAttribute attribute)
         [queue removeObjectAtIndex:0];
         [self.nodes insertObject:node atIndex:0];
         
+        NSMutableArray *outgoingEdgesToRemove = [NSMutableArray array];
         for (JWConstraintGraphNode *outgoing in [node outgoingEdges])
         {
-            [node removeOutgoing:outgoing];
+            [outgoingEdgesToRemove addObject:outgoing];
             [outgoing removeIncoming:node];
             if ([[outgoing incomingEdges] count] == 0)
             {
                 [queue addObject:outgoing];
             }
         }
+
+        for (JWConstraintGraphNode *outgoing in outgoingEdgesToRemove)
+             [node removeOutgoing:outgoing];
     }
     
     for (JWConstraintGraphNode *node in allNodes)
